@@ -1,0 +1,185 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
+#   However, in case of collaboration, if having platform-specific dependencies or dependencies
+#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+#   install all needed dependencies.
+#Pipfile.lock
+
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+*.npz
+*.pt
+src/KL-BigGAN/Fairness_test_bench/toy_data/test_fairness_data_0.100000_samples_10000
+src/KL-BigGAN/Fairness_test_bench/toy_data/test_fairness_data_0.150000_samples_10000
+src/KL-BigGAN/Fairness_test_bench/toy_data/test_fairness_data_0.200000_samples_10000
+src/KL-BigGAN/Fairness_test_bench/toy_data/test_fairness_data_0.250000_samples_10000
+src/KL-BigGAN/Fairness_test_bench/toy_data/test_fairness_data_0.300000_samples_10000
+src/KL-BigGAN/Fairness_test_bench/toy_data/test_fairness_data_0.350000_samples_10000
+src/KL-BigGAN/Fairness_test_bench/toy_data/test_fairness_data_0.400000_samples_10000
+src/KL-BigGAN/Fairness_test_bench/toy_data/test_fairness_data_0.450000_samples_10000
+src/KL-BigGAN/Fairness_test_bench/toy_data/test_fairness_data_0.500000_samples_10000
+src/KL-BigGAN/Fairness_test_bench/toy_data/test_fairness_data_0.550000_samples_10000
+src/KL-BigGAN/Fairness_test_bench/toy_data/test_fairness_data_0.600000_samples_10000
+src/KL-BigGAN/Fairness_test_bench/toy_data/test_fairness_data_0.650000_samples_10000
+src/KL-BigGAN/Fairness_test_bench/toy_data/test_fairness_data_0.700000_samples_10000
+src/KL-BigGAN/Fairness_test_bench/toy_data/test_fairness_data_0.750000_samples_10000
+src/KL-BigGAN/Fairness_test_bench/toy_data/test_fairness_data_0.800000_samples_10000
+src/KL-BigGAN/Fairness_test_bench/toy_data/test_fairness_data_0.850000_samples_10000
+src/KL-BigGAN/Fairness_test_bench/toy_data/test_fairness_data_0.900000_samples_10000
+src/KL-BigGAN/Fairness_test_bench/toy_data/test_fairness_data_0.950000_samples_10000
+*.jpg
+*.pth
+*.tar
+*.100000_samples_10000
+*.900000_samples_1000
+*.900000_samples_10000
+*.800000_samples_1000
+*.800000_samples_10000
+*.700000_samples_1000
+*.700000_samples_10000
+*.600000_samples_1000
+*.600000_samples_10000
+*.500000_samples_1000
+*.500000_samples_10000
+*.400000_samples_1000
+*.400000_samples_10000
+*.300000_samples_1000
+*.300000_samples_10000
+*.200000_samples_1000
+*.200000_samples_10000
+*.100000_samples_1000
+src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_0
+src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_0
+src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_4
+src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_5
+src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_7
+src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_8
+src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_9
+src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_6
+src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_0
+src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_0
+src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_0
+src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_1
+src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_2
+src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_3
+src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_0
