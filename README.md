@@ -9,7 +9,7 @@ python preprocess_celeba.py --data_dir=E:\GIT\local_data_in_use\CelebA_data --ou
 
 To split the data for multiple attributes
 ```
-python .\preprocess_celeba_multi.py --split_type=train --class_idx 8 20
+python .\preprocess_celeba_multi.py --split_type=train --multi_class_idx 8 20
 ```
 
 
@@ -17,7 +17,13 @@ python .\preprocess_celeba_multi.py --split_type=train --class_idx 8 20
 ## 2) Pre-train attribute classifier
 For a single-attribute:
 ```
-python3 train_attribute_clf.py celeba ./results/attr_clf
+python3 train_attribute_clf.py celeba ./results/attr_clf --class_idx 20
 ```
-
-For multiple attributes, add the `--multi=True` flag.
+For multiple attributes
+''' 
+python3 train_attribute_clf.py celeba ./results/multi_clf --multi=True --multi_class_idx 6 7 8 20
+'''
+For multiple attributes with even training data
+''' 
+python3 train_attribute_clf.py celeba ./results/multi_clf --multi=True --even=True --multi_class_idx 6 7 8 20
+'''
