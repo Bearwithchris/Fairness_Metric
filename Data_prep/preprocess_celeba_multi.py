@@ -44,6 +44,7 @@ data = torch.load(os.path.join(DATA_DIR, '{}_celeba_64x64.pt'.format(args.split_
 labels = torch.load(os.path.join(DATA_DIR, '{}_labels_celeba_64x64.pt'.format(args.split_type)))
 new_labels = np.zeros(len(labels))
 unique_items = np.unique(labels[:,args.multi_class_idx], axis=0)
+
 minCount=162770
 for i, unique in enumerate(unique_items):
     yes = np.ravel([np.array_equal(x,unique) for x in labels[:,args.multi_class_idx]])

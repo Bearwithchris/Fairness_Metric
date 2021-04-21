@@ -183,3 +183,4 @@ src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_1
 src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_2
 src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_3
 src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_0
+data/resampled_ratio/gen_data_16_0
