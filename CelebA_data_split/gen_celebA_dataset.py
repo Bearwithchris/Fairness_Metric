@@ -13,7 +13,7 @@ import copy
 BASE_PATH = '../data/'
 parser = argparse.ArgumentParser()
 parser.add_argument('--class_idx', type=int, help='CelebA class label for training.', default=20)
-parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[6,7,8,20])
+parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[6,7,8])
 parser.add_argument('--multi', type=bool, default=True, help='If True, runs multi-attribute classifier')
 parser.add_argument('--split_type', type=str, help='[train,val,split]', default="test")
 args = parser.parse_args()
