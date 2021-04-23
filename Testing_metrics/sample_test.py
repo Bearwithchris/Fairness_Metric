@@ -62,9 +62,9 @@ def fairness_discrepancy(data, n_classes):
     rank=np.linspace(1,n_classes-1,n_classes-1)
     rank[::-1].sort() #Descending order
     perc=np.array([i/np.sum(rank) for i in rank])
-    probs[::-1].sort()
-    alpha=probs[1:]
-    specificity=probs[0]-np.sum(alpha*perc)
+    props[::-1].sort()
+    alpha=props[1:]
+    specificity=props[0]-np.sum(alpha*perc)
     info_spec=(l1_fair_d+specificity)/2
     
     
