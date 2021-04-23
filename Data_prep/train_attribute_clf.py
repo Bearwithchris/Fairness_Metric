@@ -85,7 +85,7 @@ if __name__ == "__main__":
             
         n_classes =  2**len(args.multi_class_idx)
 
-    f=open("./log.txt","a")
+    f=open("../logs/Attribute_classifier_log.txt","a")
     f.write(str(len(train_dataset))+" "+str(len(valid_dataset)))
     print(len(train_dataset))
     print(len(valid_dataset))
@@ -139,7 +139,8 @@ if __name__ == "__main__":
 
                 # run through model
                 logits, probas = model(data)
-#                 print (probas)
+                # print (logits[0])
+                # print (target[0])
                 test_loss += F.cross_entropy(logits, target, reduction='sum').item() # sum up batch loss
                 _, pred = torch.max(probas, 1)
                 num_examples += target.size(0)

@@ -55,3 +55,86 @@ Entry type: test['Big_Lips', 'Big_Nose', 'Black_Hair', 'Male']
 [1. 1. 1. 0.] 14 count=375 
 [1. 1. 1. 1.] 15 count=492 
 Even Labels of TOTAL SAMPLES =1824 
+***********NEW ENTRY******************
+Entry type: train['Black_Hair', 'Male']
+[0. 0.] 0 count=75725 
+[0. 1.] 1 count=48139 
+[1. 0.] 2 count=18784 
+[1. 1.] 3 count=20122 
+Even Labels of TOTAL SAMPLES =75136 
+***********NEW ENTRY******************
+Entry type: train['Big_Lips', 'Big_Nose', 'Black_Hair']
+[0. 0. 0.] 0 count=75818 
+[0. 0. 1.] 1 count=20756 
+[0. 1. 0.] 2 count=20276 
+[0. 1. 1.] 3 count=6707 
+[1. 0. 0.] 4 count=21235 
+[1. 0. 1.] 5 count=6620 
+[1. 1. 0.] 6 count=6535 
+[1. 1. 1.] 7 count=4823 
+Even Labels of TOTAL SAMPLES =38584 
+***********NEW ENTRY******************
+Entry type: train['Big_Lips', 'Big_Nose', 'Black_Hair', 'Male']
+[0. 0. 0. 0.] 0 count=50175 
+[0. 0. 0. 1.] 1 count=25643 
+[0. 0. 1. 0.] 2 count=10426 
+[0. 0. 1. 1.] 3 count=10330 
+[0. 1. 0. 0.] 4 count=3949 
+[0. 1. 0. 1.] 5 count=16327 
+[0. 1. 1. 0.] 6 count=1412 
+[0. 1. 1. 1.] 7 count=5295 
+[1. 0. 0. 0.] 8 count=19180 
+[1. 0. 0. 1.] 9 count=2055 
+[1. 0. 1. 0.] 10 count=5173 
+[1. 0. 1. 1.] 11 count=1447 
+[1. 1. 0. 0.] 12 count=2421 
+[1. 1. 0. 1.] 13 count=4114 
+[1. 1. 1. 0.] 14 count=1773 
+[1. 1. 1. 1.] 15 count=3050 
+Even Labels of TOTAL SAMPLES =22592 
+***********NEW ENTRY******************
+Entry type: train['Big_Lips', 'Big_Nose', 'Black_Hair']
+[0. 0. 0.] 0 count=75818 
+[0. 0. 1.] 1 count=20756 
+[0. 1. 0.] 2 count=20276 
+[0. 1. 1.] 3 count=6707 
+[1. 0. 0.] 4 count=21235 
+[1. 0. 1.] 5 count=6620 
+[1. 1. 0.] 6 count=6535 
+[1. 1. 1.] 7 count=4823 
+Even Labels of TOTAL SAMPLES =38584 
+***********NEW ENTRY******************
+Entry type: train['Big_Lips', 'Big_Nose', 'Black_Hair']
+***********NEW ENTRY******************
+Entry type: train['Big_Lips', 'Big_Nose', 'Black_Hair']
+[0. 0. 0.] 0 count=75818 
+[0. 0. 1.] 1 count=20756 
+[0. 1. 0.] 2 count=20276 
+[0. 1. 1.] 3 count=6707 
+[1. 0. 0.] 4 count=21235 
+[1. 0. 1.] 5 count=6620 
+[1. 1. 0.] 6 count=6535 
+[1. 1. 1.] 7 count=4823 
+Even Labels of TOTAL SAMPLES =38584 
+***********NEW ENTRY******************
+Entry type: test['Big_Lips', 'Big_Nose', 'Black_Hair']
+[0. 0. 0.] 0 count=8263 
+[0. 0. 1.] 1 count=2917 
+[0. 1. 0.] 2 count=1658 
+[0. 1. 1.] 3 count=596 
+[1. 0. 0.] 4 count=3508 
+[1. 0. 1.] 5 count=1042 
+[1. 1. 0.] 6 count=1111 
+[1. 1. 1.] 7 count=867 
+Even Labels of TOTAL SAMPLES =4768 
+***********NEW ENTRY******************
+Entry type: val['Big_Lips', 'Big_Nose', 'Black_Hair']
+[0. 0. 0.] 0 count=10471 
+[0. 0. 1.] 1 count=2334 
+[0. 1. 0.] 2 count=3011 
+[0. 1. 1.] 3 count=1007 
+[1. 0. 0.] 4 count=1654 
+[1. 0. 1.] 5 count=465 
+[1. 1. 0.] 6 count=587 
+[1. 1. 1.] 7 count=338 
+Even Labels of TOTAL SAMPLES =2704 

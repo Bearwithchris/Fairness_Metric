@@ -1,0 +1,24 @@
+75136 185638584 1856162770 19867162770 1986738584 1856162770 19867162770 19867
+Test set: Average loss: 1.1786, Accuracy: 11496/19867 (58%)
+162770 19867162770 19867162770 19867162770 19867162770 19867
+Test set: Average loss: 1.0702, Accuracy: 12142/19867 (61%)
+
+Test set: Average loss: 1.1588, Accuracy: 11736/19867 (59%)
+
+Test set: Average loss: 1.0137, Accuracy: 12274/19867 (62%)
+
+Test set: Average loss: 1.0305, Accuracy: 12258/19867 (62%)
+
+Test set: Average loss: 1.0001, Accuracy: 12513/19867 (63%)
+
+Test set: Average loss: 1.0211, Accuracy: 12364/19867 (62%)
+
+Test set: Average loss: 1.0271, Accuracy: 12313/19867 (62%)
+
+Test set: Average loss: 1.1427, Accuracy: 11758/19867 (59%)
+
+Test set: Average loss: 1.2054, Accuracy: 11655/19867 (59%)
+
+Test set: Average loss: 1.3093, Accuracy: 10695/19867 (54%)
+
+Test set: Average loss: 1.5469, Accuracy: 9761/19962 (49%)

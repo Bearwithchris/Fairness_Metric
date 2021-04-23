@@ -1,7 +1,9 @@
 ## 1) Data setup:
 (a) Download the CelebA dataset here (http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html) into the `data/` directory (if elsewhere, note the path for step b). Of the download links provided, choose `Align&Cropped Images` and download `Img/img_align_celeba/` folder, `Anno/list_attr_celeba.txt`, and `Eval/list_eval_partition.txt` to `data/`.
-
+1-2: Scripts can be found in Data_prep folder
+3: Scrips can be found in CelebA_data_split
 (b) Preprocess the CelebA dataset for faster training:
+**** Remember to do it for all 3 catergories ****
 >Split into train/test/val
 ```
 python preprocess_celeba.py --data_dir=E:\GIT\local_data_in_use\CelebA_data --out_dir=../data --partition=train
@@ -20,10 +22,13 @@ For a single-attribute:
 python3 train_attribute_clf.py celeba ./results/attr_clf --class_idx 20
 ```
 For multiple attributes
-''' 
-python3 train_attribute_clf.py celeba ./results/multi_clf --multi=True --multi_class_idx 6 7 8 20
-'''
+``` 
+python train_attribute_clf.py celeba ./results/multi_clf --multi=True --multi_class_idx 6 7 8 20
+```
 For multiple attributes with even training data
-''' 
-python3 train_attribute_clf.py celeba ./results/multi_clf --multi=True --even=True --multi_class_idx 6 7 8 20
-'''
+``` 
+python train_attribute_clf.py celeba ./results/multi_clf --multi=True --even=True --multi_class_idx 6 7 8 20
+```
+
+## 3) Prep Testing data 
+> Segment the data into decrease distribution of long-tail to even distriubtions of data for testing
