@@ -48,8 +48,8 @@ def fairness_discrepancy(data, n_classes):
 
 
     # L2 and L1
-    l2_fair_d = np.sqrt(((props - truth)**2).sum())
-    l1_fair_d = abs(props - truth).sum()
+    l2_fair_d = np.sqrt(((props - truth)**2).sum())/n_classes
+    l1_fair_d = abs(props - truth).sum()/n_classes
 
     # q = props, p = truth
     kl_fair_d = (props * (np.log(props) - np.log(truth))).sum()
