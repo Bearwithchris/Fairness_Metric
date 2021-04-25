@@ -62,9 +62,14 @@ def fairness_discrepancy(data, n_classes):
     rank=np.linspace(1,n_classes-1,n_classes-1)
     rank[::-1].sort() #Descending order
     perc=np.array([i/np.sum(rank) for i in rank])
-    props[::-1].sort()
-    alpha=props[1:]
-    specificity=abs(props[0]-np.sum(alpha*perc))
+    
+    #Create array to populate proportions
+    props2=np.zeros(n_classes)
+    props2[unique]=props
+                  
+    props2[::-1].sort()
+    alpha=props2[1:]
+    specificity=abs(props2[0]-np.sum(alpha*perc))
     info_spec=(l1_fair_d+specificity)/2
     
     
@@ -87,14 +92,16 @@ def classify_examples(model, sample_path):
     preds = []
     probs = []
     samples = np.load(sample_path)['x']
-    n_batches = samples.shape[0] // 1000
-    remainder=samples.shape[0]-(n_batches*1000)
+    bs=100
+    n_batches = samples.shape[0] // bs
+    remainder=samples.shape[0]-(n_batches*bs)
     print (sample_path)
 
     with torch.no_grad():
         # generate 10K samples
+    
         for i in range(n_batches):
-            x = samples[i*1000:(i+1)*1000]
+            x = samples[i*bs:(i+1)*bs]
             samp = x / 255.  # renormalize to feed into classifier
             samp = torch.from_numpy(samp).to('cuda').float()
 
@@ -103,9 +110,10 @@ def classify_examples(model, sample_path):
             _, pred = torch.max(probas, 1) #Returns the max indices i.e. index
             probs.append(probas)
             preds.append(pred)
+          
             
         if remainder!=0:
-            x = samples[(i+1)*1000:(1000*(i+1))+remainder]
+            x = samples[(i+1)*bs:(bs*(i+1))+remainder]
             samp = x / 255.  # renormalize to feed into classifier
             samp = torch.from_numpy(samp).to('cuda').float()
             # get classifier predictions
@@ -127,7 +135,7 @@ def run():
     parser = argparse.ArgumentParser()
     parser.add_argument('--index', type=int, help='dataset index to load', default=1)
     parser.add_argument('--class_idx', type=int, help='CelebA class label for training.', default=20)
-    parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[6,7,8])
+    parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[6,7,8,20])
     parser.add_argument('--multi', type=bool, default=True, help='If True, runs multi-attribute classifier')
     parser.add_argument('--split_type', type=str, help='[train,val,split]', default="test")
     args = parser.parse_args()
