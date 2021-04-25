@@ -268,10 +268,10 @@ def run():
         
         #Write log
         # f.write("Running: "+npz_filename+"\n")
-        f.write('fair_disc for iter {} is: l2:{}, l1:{}, kl:{} \n'.format(i, l2, l1, kl))
+        f.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} \n'.format(attributes,args.index, l2, l1, IS))
         
         
-        print('fair_disc for iter {} is: l2:{}, l1:{}, kl:{}'.format(i, l2, l1, kl))
+        print('Fair_disc for classes {} index {} is: l2={} l1={} IS={} \n'.format(attributes,args.index, l2, l1, IS))
         # print('fair_disc_exp for iter {} is: l2:{}, l1:{}, kl:{} \n'.format(i, l2Exp, l1Exp, klExp))
         
         
