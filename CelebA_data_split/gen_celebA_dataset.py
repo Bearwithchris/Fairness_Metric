@@ -215,7 +215,7 @@ def generate_test_datasets(dist,index,cap):
 #Multu===================================================================================
 
 if __name__=='__main__':
-    testdist=dist(16)
+    testdist=dist(2**len(args.multi_class_idx))
     cap=sample_max(testdist[0])
     f=open("../logs/data_tags.txt","a")
     for i in range(len(testdist)):
