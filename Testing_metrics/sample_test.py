@@ -64,11 +64,11 @@ def fairness_discrepancy(data, n_classes):
     perc=np.array([i/np.sum(rank) for i in rank])
     props[::-1].sort()
     alpha=props[1:]
-    specificity=props[0]-np.sum(alpha*perc)
+    specificity=abs(props[0]-np.sum(alpha*perc))
     info_spec=(l1_fair_d+specificity)/2
     
     
-    return l2_fair_d, l1_fair_d, kl_fair_d,info_spec
+    return l2_fair_d, l1_fair_d, kl_fair_d,info_spec,specificity
 
 
 def load_data(attributes,index):
@@ -255,7 +255,7 @@ def run():
         npz_filename = os.path.join("../data","FID_sample_storage_%i"%attributes,'%s_fid_real_samples_%s.npz' % (attributes, args.index))
         preds, probs = classify_examples(clf, npz_filename) #Classify the data
         
-        l2, l1, kl,IS = fairness_discrepancy(preds, clf_classes) #Pass to calculate score
+        l2, l1, kl,IS,specificity = fairness_discrepancy(preds, clf_classes) #Pass to calculate score
         
         #exp
         # l2Exp, l1Exp, klExp = utils.fairness_discrepancy_exp(probs, clf_classes) #Pass to calculate score
@@ -268,10 +268,10 @@ def run():
         
         #Write log
         # f.write("Running: "+npz_filename+"\n")
-        f.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} \n'.format(attributes,args.index, l2, l1, IS))
+        f.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity=specificity{} \n'.format(attributes,args.index, l2, l1, IS,specificity))
         
         
-        print('Fair_disc for classes {} index {} is: l2={} l1={} IS={} \n'.format(attributes,args.index, l2, l1, IS))
+        print('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity=specificity{} \n'.format(attributes,args.index, l2, l1, IS,specificity))
         # print('fair_disc_exp for iter {} is: l2:{}, l1:{}, kl:{} \n'.format(i, l2Exp, l1Exp, klExp))
         
         
@@ -294,6 +294,7 @@ def run():
     print(l2_db)
     print(l1_db)
     print(IS)
+    print(specificity)
     
     # # save all metrics
     # with open(fname, 'wb') as fp:
