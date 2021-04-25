@@ -255,7 +255,7 @@ def run():
         npz_filename = os.path.join("../data","FID_sample_storage_%i"%attributes,'%s_fid_real_samples_%s.npz' % (attributes, args.index))
         preds, probs = classify_examples(clf, npz_filename) #Classify the data
         
-        l2, l1, kl,Is = fairness_discrepancy(preds, clf_classes) #Pass to calculate score
+        l2, l1, kl,IS = fairness_discrepancy(preds, clf_classes) #Pass to calculate score
         
         #exp
         # l2Exp, l1Exp, klExp = utils.fairness_discrepancy_exp(probs, clf_classes) #Pass to calculate score
@@ -293,7 +293,7 @@ def run():
     # print('fairness discrepancies saved in {}'.format(fname))
     print(l2_db)
     print(l1_db)
-    print(Is)
+    print(IS)
     
     # # save all metrics
     # with open(fname, 'wb') as fp:

@@ -1,0 +1,1 @@
+for /l %%x in (1, 1, 64) do python sample_test.py --multi=True --multi_class_idx 6 7 8 --index=%%x
