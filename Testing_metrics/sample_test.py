@@ -133,9 +133,10 @@ def classify_examples(model, sample_path):
 def run():
     # Prepare state dict, which holds things like epoch # and itr #
     parser = argparse.ArgumentParser()
-    parser.add_argument('--index', type=int, help='dataset index to load', default=1)
+    parser.add_argument('--index', type=int, help='dataset index to load', default=0)
     parser.add_argument('--class_idx', type=int, help='CelebA class label for training.', default=20)
-    parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[6,7,8,20])
+    # parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[6,7,8,20])
+    parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[39])
     parser.add_argument('--multi', type=bool, default=True, help='If True, runs multi-attribute classifier')
     parser.add_argument('--split_type', type=str, help='[train,val,split]', default="test")
     args = parser.parse_args()
@@ -276,10 +277,10 @@ def run():
         
         #Write log
         # f.write("Running: "+npz_filename+"\n")
-        f.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity=specificity{} \n'.format(attributes,args.index, l2, l1, IS,specificity))
+        f.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={} \n'.format(attributes,args.index, l2, l1, IS,specificity))
         
         
-        print('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity=specificity{} \n'.format(attributes,args.index, l2, l1, IS,specificity))
+        print('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={} \n'.format(attributes,args.index, l2, l1, IS,specificity))
         # print('fair_disc_exp for iter {} is: l2:{}, l1:{}, kl:{} \n'.format(i, l2Exp, l1Exp, klExp))
         
         

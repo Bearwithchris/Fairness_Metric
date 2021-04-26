@@ -1,0 +1,22 @@
+162770 19867
+Test set: Average loss: 0.3628, Accuracy: 16812/19867 (85%)
+
+Test set: Average loss: 0.3708, Accuracy: 16860/19867 (85%)
+
+Test set: Average loss: 0.3634, Accuracy: 16704/19867 (84%)
+
+Test set: Average loss: 0.3575, Accuracy: 16935/19867 (85%)
+
+Test set: Average loss: 0.3370, Accuracy: 17029/19867 (86%)
+
+Test set: Average loss: 0.3667, Accuracy: 17024/19867 (86%)
+
+Test set: Average loss: 0.3919, Accuracy: 16977/19867 (85%)
+
+Test set: Average loss: 0.3601, Accuracy: 16900/19867 (85%)
+
+Test set: Average loss: 0.3886, Accuracy: 16966/19867 (85%)
+
+Test set: Average loss: 0.4266, Accuracy: 16852/19867 (85%)
+
+Test set: Average loss: 0.4226, Accuracy: 17024/19962 (85%)
