@@ -1,0 +1,4 @@
+gen_data_0_attr_2_0.33333333_0.66666667
+gen_data_1_attr_2_0.5_0.5
+gen_data_0_attr_2_0.33333333_0.66666667
+gen_data_1_attr_2_0.5_0.5

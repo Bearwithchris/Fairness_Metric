@@ -1,0 +1,15 @@
+***********NEW ENTRY******************
+Entry type: train['Male']
+[0.] 0 count=94509 
+[1.] 1 count=68261 
+Even Labels of TOTAL SAMPLES =136522 
+***********NEW ENTRY******************
+Entry type: test['Male']
+[0.] 0 count=12247 
+[1.] 1 count=7715 
+Even Labels of TOTAL SAMPLES =15430 
+***********NEW ENTRY******************
+Entry type: val['Male']
+[0.] 0 count=11409 
+[1.] 1 count=8458 
+Even Labels of TOTAL SAMPLES =16916 

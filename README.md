@@ -33,9 +33,15 @@ python train_attribute_clf.py celeba ./results/multi_clf --multi=True --even=Tru
 ## 3) Prep Testing data 
 > Segment the data into decrease distribution of long-tail to even distriubtions of data for testing
 ```
-python .\gen_celebA_dataset.py --multi=True --split_type test --multi=True  --multi_class_idx 6 7 8 20
+python .\gen_celebA_dataset.py --multi=True --mode_normal==True --split_type test --multi=True  --multi_class_idx 6 7 8 20
 ```
->Run the testing 
+>Extreme point test
+```
+python .\gen_celebA_dataset.py --multi=True --mode_normal==False --split_type test --multi=True  --multi_class_idx 6 7 8 20
+```
+
+## 4) Running Test 
+>Run the dist test
 ```
 python sample_test.py --multi=True --multi_class_idx 6 7 8 20
 ```

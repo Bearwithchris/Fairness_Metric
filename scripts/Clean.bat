@@ -1,0 +1,12 @@
+cd ../data/resampled_ratio
+del *
+cd ../FID_sample_storage_2
+del *.npz 
+cd ../FID_sample_storage_4
+del *.npz 
+cd ../FID_sample_storage_8
+del *.npz 
+cd ../FID_sample_storage_16
+del *.npz 
+cd ../../logs
+del *.txt

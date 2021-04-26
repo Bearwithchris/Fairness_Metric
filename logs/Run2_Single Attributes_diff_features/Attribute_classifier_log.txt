@@ -1,22 +1,44 @@
-162770 19867
-Test set: Average loss: 0.3628, Accuracy: 16812/19867 (85%)
+136522 16916
+Test set: Average loss: 0.0970, Accuracy: 16301/16916 (96%)
 
-Test set: Average loss: 0.3708, Accuracy: 16860/19867 (85%)
+Test set: Average loss: 0.0743, Accuracy: 16471/16916 (97%)
 
-Test set: Average loss: 0.3634, Accuracy: 16704/19867 (84%)
+Test set: Average loss: 0.0751, Accuracy: 16428/16916 (97%)
 
-Test set: Average loss: 0.3575, Accuracy: 16935/19867 (85%)
+Test set: Average loss: 0.0603, Accuracy: 16546/16916 (98%)
 
-Test set: Average loss: 0.3370, Accuracy: 17029/19867 (86%)
+Test set: Average loss: 0.0645, Accuracy: 16531/16916 (98%)
 
-Test set: Average loss: 0.3667, Accuracy: 17024/19867 (86%)
+Test set: Average loss: 0.0627, Accuracy: 16566/16916 (98%)
 
-Test set: Average loss: 0.3919, Accuracy: 16977/19867 (85%)
+Test set: Average loss: 0.0602, Accuracy: 16575/16916 (98%)
 
-Test set: Average loss: 0.3601, Accuracy: 16900/19867 (85%)
+Test set: Average loss: 0.0731, Accuracy: 16545/16916 (98%)
 
-Test set: Average loss: 0.3886, Accuracy: 16966/19867 (85%)
+Test set: Average loss: 0.0762, Accuracy: 16525/16916 (98%)
 
-Test set: Average loss: 0.4266, Accuracy: 16852/19867 (85%)
+Test set: Average loss: 0.0819, Accuracy: 16543/16916 (98%)
 
-Test set: Average loss: 0.4226, Accuracy: 17024/19962 (85%)
+Test set: Average loss: 0.1190, Accuracy: 14926/15430 (97%)
+71964 10070
+Test set: Average loss: 0.5092, Accuracy: 7381/10070 (73%)
+
+Test set: Average loss: 0.4410, Accuracy: 7961/10070 (79%)
+
+Test set: Average loss: 0.4503, Accuracy: 7923/10070 (79%)
+
+Test set: Average loss: 0.4296, Accuracy: 8066/10070 (80%)
+
+Test set: Average loss: 0.5143, Accuracy: 7584/10070 (75%)
+
+Test set: Average loss: 0.4113, Accuracy: 8159/10070 (81%)
+
+Test set: Average loss: 0.4393, Accuracy: 8073/10070 (80%)
+
+Test set: Average loss: 0.4853, Accuracy: 7784/10070 (77%)
+
+Test set: Average loss: 0.4767, Accuracy: 8094/10070 (80%)
+
+Test set: Average loss: 0.5162, Accuracy: 8058/10070 (80%)
+
+Test set: Average loss: 0.5063, Accuracy: 7771/9696 (80%)
