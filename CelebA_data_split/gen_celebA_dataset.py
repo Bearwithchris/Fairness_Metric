@@ -13,10 +13,10 @@ import copy
 BASE_PATH = '../data/'
 parser = argparse.ArgumentParser()
 parser.add_argument('--class_idx', type=int, help='CelebA class label for training.', default=20)
-parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[8])
+parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[39])
 parser.add_argument('--multi', type=bool, default=True, help='If True, runs multi-attribute classifier')
 parser.add_argument('--split_type', type=str, help='[train,val,split]', default="test")
-parser.add_argument('--mode_normal', type=bool, default=False, help='If True, normal mode, else extreme mode')
+parser.add_argument('--mode_normal', type=int, default=1, help='If True, normal mode, else extreme mode')
 args = parser.parse_args()
 
 
@@ -134,11 +134,12 @@ def generate_test_datasets(dist,index,cap):
 #Multu===================================================================================
 
 if __name__=='__main__':
-    if args.mode_normal:
+    if args.mode_normal==1:
         testdist=dist(2**len(args.multi_class_idx))
     else:
         testdist=extreme_dist(2**len(args.multi_class_idx))
-        
+    
+    print(args.mode_normal)
     cap=sample_max(testdist[0])
     f=open("../logs/data_tags.txt","a")
     for i in range(len(testdist)):
