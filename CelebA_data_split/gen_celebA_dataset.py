@@ -13,7 +13,7 @@ import copy
 BASE_PATH = '../data/'
 parser = argparse.ArgumentParser()
 parser.add_argument('--class_idx', type=int, help='CelebA class label for training.', default=20)
-parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[6,7,8])
+parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[8,20])
 parser.add_argument('--multi', type=bool, default=True, help='If True, runs multi-attribute classifier')
 parser.add_argument('--split_type', type=str, help='[train,val,split]', default="test")
 args = parser.parse_args()
@@ -173,8 +173,9 @@ def generate_test_datasets(dist,index,cap):
     new_data= data[label_arg,:,:,:] #Even data
     new_labels=labels[label_arg]
     new_tag="attr_"+str(attributes)+"_"+str(dist).strip("[").strip("]").replace(" ","_")
-    f.write("gen_data_%s_%s\n"%(index,new_tag))
+    # f.write("gen_data_%s_%s\n"%(index,new_tag))
     torch.save((new_data,new_labels),'../data/resampled_ratio/gen_data_%i_%s'%(attributes,index))
+    return new_labels
     # #Seiving out the male_female breakdown
     # M_F_labels=labels.numpy()[:,class_idx]
     # male=np.where(M_F_labels==1)
@@ -217,9 +218,9 @@ def generate_test_datasets(dist,index,cap):
 if __name__=='__main__':
     testdist=dist(2**len(args.multi_class_idx))
     cap=sample_max(testdist[0])
-    f=open("../logs/data_tags.txt","a")
+    # f=open("../logs/data_tags.txt","a")
     for i in range(len(testdist)):
-        generate_test_datasets(testdist[i],i,cap)
+        new_labels=generate_test_datasets(testdist[i],i,cap)
     # # Standard test with regards to percentages
     # unbias_perc=0.5
     # samples=10000
