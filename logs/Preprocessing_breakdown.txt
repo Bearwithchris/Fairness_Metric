@@ -13,18 +13,3 @@ Entry type: val['Male']
 [0.] 0 count=11409 
 [1.] 1 count=8458 
 Even Labels of TOTAL SAMPLES =16916 
-***********NEW ENTRY******************
-Entry type: train['Young']
-[0.] 0 count=35982 
-[1.] 1 count=126788 
-Even Labels of TOTAL SAMPLES =71964 
-***********NEW ENTRY******************
-Entry type: test['Young']
-[0.] 0 count=4848 
-[1.] 1 count=15114 
-Even Labels of TOTAL SAMPLES =9696 
-***********NEW ENTRY******************
-Entry type: val['Young']
-[0.] 0 count=5035 
-[1.] 1 count=14832 
-Even Labels of TOTAL SAMPLES =10070 
