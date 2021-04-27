@@ -38,9 +38,9 @@ if __name__ == "__main__":
     parser.add_argument('--class_idx', type=int, default=20,
                         help='CelebA class label for training.')
     parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[6,7,8,20])
-    parser.add_argument('--multi', type=bool, default=False, 
+    parser.add_argument('--multi', type=int, default=1, 
                         help='If True, runs multi-attribute classifier')
-    parser.add_argument('--even', type=bool, default=False, 
+    parser.add_argument('--even', type=int, default=1, 
                         help='If True, runs multi-even-attribute classifier')
     parser.add_argument('--cuda', action='store_true', default=True,
                         help='enables CUDA training')
@@ -54,13 +54,13 @@ if __name__ == "__main__":
     np.random.seed(777)
 
     device = torch.device('cuda' if args.cuda else 'cpu')
-
-    #Create output folder
+    
+      #Create output folder
     if not os.path.isdir(args.out_dir):
         os.makedirs(args.out_dir)
 
     # get data: idx 20 = male, idx 8 = black hair
-    if not args.multi:
+    if args.multi==0:
         train_dataset = build_celeba_classification_dataset(
               'train', args.class_idx)
         # train_dataset = build_custom_celeba_classification_dataset(
@@ -71,7 +71,7 @@ if __name__ == "__main__":
             'test', args.class_idx)
         n_classes = 2
     else:
-        if not args.even:
+        if args==0:
             # (Dataset are already in torch.utils.data format)
             train_dataset = build_multi_celeba_classification_datset('train')
             # train_dataset = build_custom_multi_celeba_classification_datset('train',args.count)

@@ -137,7 +137,7 @@ def run():
     parser.add_argument('--class_idx', type=int, help='CelebA class label for training.', default=20)
     # parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[6,7,8,20])
     parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[39])
-    parser.add_argument('--multi', type=bool, default=True, help='If True, runs multi-attribute classifier')
+    parser.add_argument('--multi', type=int, default=1, help='If True, runs multi-attribute classifier')
     parser.add_argument('--split_type', type=str, help='[train,val,split]', default="test")
     args = parser.parse_args()
     # state_dict = {'itr': 0, 'epoch': 0, 'save_num': 0, 'save_best_num_fair': 0, 'save_best_num_fid': 0, 'best_IS': 0, 'best_FID': 999999, 'best_fair_d': 999999, 'config': config}
@@ -186,7 +186,7 @@ def run():
     #                     else utils.name_from_config(config))
     
     #Load dataset to be tested
-    if args.multi:
+    if args.multi==1:
         attributes=2**len(args.multi_class_idx)
     else: 
         attributes=2 #Single class
@@ -232,7 +232,7 @@ def run():
 
     # load classifier 
     #(Saved state)
-    if not args.multi:
+    if args.multi==0:
         print('Pre-loading pre-trained single-attribute classifier...')
         clf_state_dict = torch.load(CLF_PATH)['state_dict']
         clf_classes = attributes

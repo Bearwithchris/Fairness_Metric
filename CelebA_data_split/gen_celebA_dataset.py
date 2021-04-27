@@ -14,7 +14,7 @@ BASE_PATH = '../data/'
 parser = argparse.ArgumentParser()
 parser.add_argument('--class_idx', type=int, help='CelebA class label for training.', default=20)
 parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[39])
-parser.add_argument('--multi', type=bool, default=True, help='If True, runs multi-attribute classifier')
+parser.add_argument('--multi', type=int, default=1, help='If True, runs multi-attribute classifier')
 parser.add_argument('--split_type', type=str, help='[train,val,split]', default="test")
 parser.add_argument('--mode_normal', type=int, default=1, help='If True, normal mode, else extreme mode')
 args = parser.parse_args()
@@ -57,7 +57,7 @@ def extreme_dist(count):
 def sample_max(dist):
     class_idx=args.class_idx
     split=args.split_type
-    if not args.multi:
+    if args.multi==0:
         data = torch.load(BASE_PATH + '{}_celeba_64x64.pt'.format(split))
         labels = torch.load(BASE_PATH + '{}_labels_celeba_64x64.pt'.format(split))
         labels = labels[:, class_idx]
