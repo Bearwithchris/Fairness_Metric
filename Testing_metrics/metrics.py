@@ -51,8 +51,8 @@ def fairness_discrepancy(data, n_classes, norm=0):
         return l2_fair_d, l1_fair_d,info_spec,specificity,wd
         # return l2_fair_d, l1_fair_d,info_spec,specificity
     else:
-        # return l2_fair_d/metric_max(n_classes,"l2"), l1_fair_d/metric_max(n_classes,"l1"),info_spec/metric_max(n_classes,"is"),specificity,wd/metric_max(n_classes,"wd",unique)
-       return l2_fair_d/metric_max(n_classes,"l2"), l1_fair_d/metric_max(n_classes,"l1"),info_spec/metric_max(n_classes,"is"),specificity
+        return l2_fair_d/metric_max(n_classes,"l2"), l1_fair_d/metric_max(n_classes,"l1"),info_spec/metric_max(n_classes,"is"),specificity,wd/metric_max(n_classes,"wd",unique)
+       # return l2_fair_d/metric_max(n_classes,"l2"), l1_fair_d/metric_max(n_classes,"l1"),info_spec/metric_max(n_classes,"is"),specificity
 
 def metric_max(n_classes,Mtype):
     Pref=np.ones(n_classes)/n_classes #Reference attribute

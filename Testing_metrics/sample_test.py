@@ -269,7 +269,7 @@ def run():
         
         # l2, l1, kl,IS,specificity = fairness_discrepancy(preds, clf_classes) #Pass to calculate score
         l2, l1,IS,specificity,wd= fd.fairness_discrepancy(preds, clf_classes) #Pass to calculate score
-        l2_norm, l1_norm,IS_norm,specificity_norm= fd.fairness_discrepancy(preds, clf_classes,1) #Pass to calculate score
+        l2_norm, l1_norm,IS_norm,specificity_norm, wd_norm= fd.fairness_discrepancy(preds, clf_classes,1) #Pass to calculate score
         
         #exp
         # l2Exp, l1Exp, klExp = utils.fairness_discrepancy_exp(probs, clf_classes) #Pass to calculate score
@@ -281,14 +281,14 @@ def run():
         probs_db[i] = probs
         
         #Write log
-        f.write("Running: "+npz_filename+"\n")
+        # f.write("Running: "+npz_filename+"\n")
         f.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={}, wd={} \n'.format(attributes,args.index, l2, l1, IS,specificity,wd))  
         # fnorm.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={}, wd={} \n'.format(attributes,args.index, l2_norm, l1_norm, IS_norm,specificity_norm,wd_norm))
         # print('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={}, wd={} \n'.format(attributes,args.index, l2, l1, IS,specificity,wd))
         # # print('fair_disc_exp for iter {} is: l2:{}, l1:{}, kl:{} \n'.format(i, l2Exp, l1Exp, klExp))
         
-        f.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={} \n'.format(attributes,args.index, l2, l1, IS,specificity))  
-        fnorm.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={} \n'.format(attributes,args.index, l2_norm, l1_norm, IS_norm,specificity_norm))
+        # f.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={} \n'.format(attributes,args.index, l2, l1, IS,specificity))  
+        fnorm.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={}, , wd={} \n'.format(attributes,args.index, l2_norm, l1_norm, IS_norm,specificity_norm,wd_norm))
         print('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={} \n'.format(attributes,args.index, l2, l1, IS,specificity))
         
         
