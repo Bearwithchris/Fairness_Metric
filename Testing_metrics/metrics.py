@@ -80,8 +80,8 @@ def metric_max(n_classes,Mtype):
     return fair_d
 
 
-# metric="is"
-# print(metric_max(2,metric))
-# print(metric_max(4,metric))
-# print(metric_max(8,metric))
-# print(metric_max(16,metric))
+metric="wd"
+print(metric_max(2,metric))
+print(metric_max(4,metric))
+print(metric_max(8,metric))
+print(metric_max(16,metric))

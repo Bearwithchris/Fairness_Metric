@@ -1,0 +1,22 @@
+136522 16916
+Test set: Average loss: 0.0812, Accuracy: 16403/16916 (97%)
+
+Test set: Average loss: 0.0904, Accuracy: 16345/16916 (97%)
+
+Test set: Average loss: 0.0713, Accuracy: 16464/16916 (97%)
+
+Test set: Average loss: 0.0656, Accuracy: 16521/16916 (98%)
+
+Test set: Average loss: 0.0625, Accuracy: 16514/16916 (98%)
+
+Test set: Average loss: 0.0765, Accuracy: 16449/16916 (97%)
+
+Test set: Average loss: 0.0556, Accuracy: 16572/16916 (98%)
+
+Test set: Average loss: 0.0611, Accuracy: 16582/16916 (98%)
+
+Test set: Average loss: 0.0684, Accuracy: 16552/16916 (98%)
+
+Test set: Average loss: 0.0802, Accuracy: 16563/16916 (98%)
+
+Test set: Average loss: 0.1120, Accuracy: 14984/15430 (97%)
