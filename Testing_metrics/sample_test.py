@@ -21,6 +21,8 @@ from torch.nn import Parameter as P
 import torchvision
 import argparse
 
+import metrics as fd
+
 # Import my stuff
 # import inception_utils
 # import utils
@@ -36,44 +38,44 @@ from clf_models import ResNet18, BasicBlock, Net
 CLF_PATH = '../Data_prep/results/attr_clf/model_best.pth.tar'
 MULTI_CLF_PATH = '../Data_prep/results/multi_clf/model_best.pth.tar'
 
-def fairness_discrepancy(data, n_classes):
-    """
-    computes fairness discrepancy metric for single or multi-attribute
-    this metric computes L2, L1, AND KL-total variation distance
-    """
-    unique, freq = np.unique(data, return_counts=True)
-    props = freq / len(data) #Proportion of data that belongs to that data
-    print (freq)
-    truth = 1./n_classes
+# def fairness_discrepancy(data, n_classes):
+#     """
+#     computes fairness discrepancy metric for single or multi-attribute
+#     this metric computes L2, L1, AND KL-total variation distance
+#     """
+#     unique, freq = np.unique(data, return_counts=True)
+#     props = freq / len(data) #Proportion of data that belongs to that data
+#     print (freq)
+#     truth = 1./n_classes
 
 
-    # L2 and L1
-    l2_fair_d = np.sqrt(((props - truth)**2).sum())/n_classes
-    l1_fair_d = abs(props - truth).sum()/n_classes
+#     # L2 and L1
+#     l2_fair_d = np.sqrt(((props - truth)**2).sum())/n_classes
+#     l1_fair_d = abs(props - truth).sum()/n_classes
 
-    # q = props, p = truth
-    kl_fair_d = (props * (np.log(props) - np.log(truth))).sum()
+#     # q = props, p = truth
+#     kl_fair_d = (props * (np.log(props) - np.log(truth))).sum()
 
-    #Cross entropy
-    p=np.ones(n_classes)/n_classes    
-    # ce=cross_entropy(p,props,n_classes)-cross_entropy(p,p,n_classes)
+#     #Cross entropy
+#     p=np.ones(n_classes)/n_classes    
+#     # ce=cross_entropy(p,props,n_classes)-cross_entropy(p,p,n_classes)
     
-    #information specificity
-    rank=np.linspace(1,n_classes-1,n_classes-1)
-    rank[::-1].sort() #Descending order
-    perc=np.array([i/np.sum(rank) for i in rank])
+#     #information specificity
+#     rank=np.linspace(1,n_classes-1,n_classes-1)
+#     rank[::-1].sort() #Descending order
+#     perc=np.array([i/np.sum(rank) for i in rank])
     
-    #Create array to populate proportions
-    props2=np.zeros(n_classes)
-    props2[unique]=props
+#     #Create array to populate proportions
+#     props2=np.zeros(n_classes)
+#     props2[unique]=props
                   
-    props2[::-1].sort()
-    alpha=props2[1:]
-    specificity=abs(props2[0]-np.sum(alpha*perc))
-    info_spec=(l1_fair_d+specificity)/2
+#     props2[::-1].sort()
+#     alpha=props2[1:]
+#     specificity=abs(props2[0]-np.sum(alpha*perc))
+#     info_spec=(l1_fair_d+specificity)/2
     
     
-    return l2_fair_d, l1_fair_d, kl_fair_d,info_spec,specificity
+#     return l2_fair_d, l1_fair_d, kl_fair_d,info_spec,specificity
 
 
 def load_data(attributes,index):
@@ -92,7 +94,7 @@ def classify_examples(model, sample_path):
     preds = []
     probs = []
     samples = np.load(sample_path)['x']
-    bs=100
+    bs=10
     n_batches = samples.shape[0] // bs
     remainder=samples.shape[0]-(n_batches*bs)
     print (sample_path)
@@ -136,7 +138,7 @@ def run():
     parser.add_argument('--index', type=int, help='dataset index to load', default=0)
     parser.add_argument('--class_idx', type=int, help='CelebA class label for training.', default=20)
     # parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[6,7,8,20])
-    parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[39])
+    parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[20,18,31])
     parser.add_argument('--multi', type=int, default=1, help='If True, runs multi-attribute classifier')
     parser.add_argument('--split_type', type=str, help='[train,val,split]', default="test")
     args = parser.parse_args()
@@ -181,6 +183,7 @@ def run():
 
     #Log Runs
     f=open('../%s/log_stamford_fair.txt' %("logs"),"a")
+    fnorm=open('../%s/log_stamford_fair_norm.txt' %("logs"),"a")
 
     # experiment_name = (config['experiment_name'] if config['experiment_name'] #Default CelebA
     #                     else utils.name_from_config(config))
@@ -264,7 +267,9 @@ def run():
         npz_filename = os.path.join("../data","FID_sample_storage_%i"%attributes,'%s_fid_real_samples_%s.npz' % (attributes, args.index))
         preds, probs = classify_examples(clf, npz_filename) #Classify the data
         
-        l2, l1, kl,IS,specificity = fairness_discrepancy(preds, clf_classes) #Pass to calculate score
+        # l2, l1, kl,IS,specificity = fairness_discrepancy(preds, clf_classes) #Pass to calculate score
+        l2, l1,IS,specificity,wd= fd.fairness_discrepancy(preds, clf_classes) #Pass to calculate score
+        l2_norm, l1_norm,IS_norm,specificity_norm= fd.fairness_discrepancy(preds, clf_classes,1) #Pass to calculate score
         
         #exp
         # l2Exp, l1Exp, klExp = utils.fairness_discrepancy_exp(probs, clf_classes) #Pass to calculate score
@@ -272,16 +277,19 @@ def run():
         # save metrics (To add on new mertrics add here)
         l2_db[i] = l2
         l1_db[i] = l1
-        kl_db[i] = kl
+        # kl_db[i] = kl
         probs_db[i] = probs
         
         #Write log
-        # f.write("Running: "+npz_filename+"\n")
-        f.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={} \n'.format(attributes,args.index, l2, l1, IS,specificity))
+        f.write("Running: "+npz_filename+"\n")
+        f.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={}, wd={} \n'.format(attributes,args.index, l2, l1, IS,specificity,wd))  
+        # fnorm.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={}, wd={} \n'.format(attributes,args.index, l2_norm, l1_norm, IS_norm,specificity_norm,wd_norm))
+        # print('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={}, wd={} \n'.format(attributes,args.index, l2, l1, IS,specificity,wd))
+        # # print('fair_disc_exp for iter {} is: l2:{}, l1:{}, kl:{} \n'.format(i, l2Exp, l1Exp, klExp))
         
-        
+        f.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={} \n'.format(attributes,args.index, l2, l1, IS,specificity))  
+        fnorm.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={} \n'.format(attributes,args.index, l2_norm, l1_norm, IS_norm,specificity_norm))
         print('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={} \n'.format(attributes,args.index, l2, l1, IS,specificity))
-        # print('fair_disc_exp for iter {} is: l2:{}, l1:{}, kl:{} \n'.format(i, l2Exp, l1Exp, klExp))
         
         
         #Commented out for stamford experiment*************************************************************************************************
@@ -304,6 +312,7 @@ def run():
     print(l1_db)
     print(IS)
     print(specificity)
+    print (wd)
     
     # # save all metrics
     # with open(fname, 'wb') as fp:
