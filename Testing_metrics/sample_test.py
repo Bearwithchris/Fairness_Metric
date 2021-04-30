@@ -35,8 +35,7 @@ sys.path.append('../Data_prep')
 from clf_models import ResNet18, BasicBlock, Net
 
 
-CLF_PATH = '../Data_prep/results/attr_clf/model_best.pth.tar'
-MULTI_CLF_PATH = '../Data_prep/results/multi_clf/model_best.pth.tar'
+
 
 # def fairness_discrepancy(data, n_classes):
 #     """
@@ -135,6 +134,8 @@ def classify_examples(model, sample_path):
 def run():
     # Prepare state dict, which holds things like epoch # and itr #
     parser = argparse.ArgumentParser()
+    parser.add_argument('--clf_path', type=str, help='Folder of the CLF file', default="attr_clf")
+    parser.add_argument('--multi_clf_path', type=str, help='Folder of the Multi CLF file', default="multi_clf")
     parser.add_argument('--index', type=int, help='dataset index to load', default=2)
     parser.add_argument('--class_idx', type=int, help='CelebA class label for training.', default=20)
     # parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[6,7,8,20])
@@ -142,42 +143,12 @@ def run():
     parser.add_argument('--multi', type=int, default=1, help='If True, runs multi-attribute classifier')
     parser.add_argument('--split_type', type=str, help='[train,val,split]', default="test")
     args = parser.parse_args()
-    # state_dict = {'itr': 0, 'epoch': 0, 'save_num': 0, 'save_best_num_fair': 0, 'save_best_num_fid': 0, 'best_IS': 0, 'best_FID': 999999, 'best_fair_d': 999999, 'config': config}
 
-    # Optionally, get the configuration from the state dict. This allows for
-    # recovery of the config provided only a state dict and experiment name,
-    # and can be convenient for writing less verbose sample shell scripts.
-    
-    # if config['config_from_name']: #Default is false
-    #     utils.load_weights(None, None, state_dict, config['weights_root'],
-    #                        config['experiment_name'], config['load_weights'], None,
-    #                        strict=False, load_optim=False)
-    #     # Ignore items which we might want to overwrite from the command line
-    #     for item in state_dict['config']:
-    #         if item not in ['z_var', 'base_root', 'batch_size', 'G_batch_size', 'use_ema', 'G_eval_mode']:
-    #             config[item] = state_dict['config'][item]
 
-    # update config (see train.py for explanation)
-    # config['resolution'] = utils.imsize_dict[config['dataset']]
-    # config['n_classes'] = 1
-    
-    # if config['conditional']:
-    #     config['n_classes'] = 2
-    # config['G_activation'] = utils.activation_dict[config['G_nl']]
-    # config['D_activation'] = utils.activation_dict[config['D_nl']]
-    # config = utils.update_config_roots(config)
-    # config['skip_init'] = True
-    # config['no_optim'] = True
+    CLF_PATH = '../Data_prep/results/%s/model_best.pth.tar'%args.clf_path
+    MULTI_CLF_PATH = '../Data_prep/results/%s/model_best.pth.tar'%args.multi_clf_path
     device = 'cuda'
-    # config['sample_num_npz'] = 10000
-    # config['sample_num_npz'] = 10000
-    # perc_bias=float(config["bias"].split("_")[0])/100
-    # print(config['ema_start'])
 
-    # Seed RNG
-    # utils.seed_rng(config['seed'])  # config['seed'])
-
-    # Setup cudnn.benchmark for free speed
     torch.backends.cudnn.benchmark = True
 
 
