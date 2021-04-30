@@ -135,10 +135,10 @@ def classify_examples(model, sample_path):
 def run():
     # Prepare state dict, which holds things like epoch # and itr #
     parser = argparse.ArgumentParser()
-    parser.add_argument('--index', type=int, help='dataset index to load', default=0)
+    parser.add_argument('--index', type=int, help='dataset index to load', default=2)
     parser.add_argument('--class_idx', type=int, help='CelebA class label for training.', default=20)
     # parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[6,7,8,20])
-    parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[20,18,31])
+    parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[20,18,31,16])
     parser.add_argument('--multi', type=int, default=1, help='If True, runs multi-attribute classifier')
     parser.add_argument('--split_type', type=str, help='[train,val,split]', default="test")
     args = parser.parse_args()

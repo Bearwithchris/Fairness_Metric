@@ -45,7 +45,7 @@ def fairness_discrepancy(data, n_classes, norm=0):
     info_spec=(l1_fair_d+specificity)/2
     
     #Wasstertein Distance
-    wd=wasserstein_distance(props,np.ones(len(props))*truth)
+    wd=wasserstein_distance(props2,np.ones(len(props2))*truth)
     
     if norm==0:
         return l2_fair_d, l1_fair_d,info_spec,specificity,wd
@@ -81,7 +81,7 @@ def metric_max(n_classes,Mtype):
 
 
 metric="wd"
-print(metric_max(2,metric))
-print(metric_max(4,metric))
-print(metric_max(8,metric))
+# print(metric_max(2,metric))
+# print(metric_max(4,metric))
+# print(metric_max(8,metric))
 print(metric_max(16,metric))
