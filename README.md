@@ -21,28 +21,60 @@ python .\preprocess_celeba_multi.py --split_type=train --multi_class_idx 8 20
 (In Data_prep folder)
 For a single-attribute:
 ```
-python3 train_attribute_clf.py celeba ./results/attr_clf --multi=0 --class_idx 20
+python train_attribute_clf.py celeba ./results/multi_clf_2 --even=1 --multi=1 --multi_class_idx 20
 ```
 For multiple attributes
 ``` 
-python train_attribute_clf.py celeba ./results/multi_clf --multi=1 --even=1 --multi_class_idx 6 7 8 20
+python train_attribute_clf.py celeba ./results/multi_clf_4 --even=1 --multi=1 --multi_class_idx 20 8
 ```
 
 
 ## 3) Prep Testing data 
 (In CelebA_data_split folder)
 > Segment the data into decrease distribution of long-tail to even distriubtions of data for testing
+>Exreteme points, mode_normal=0. Sweep, mode_normal=2
 ```
-python .\gen_celebA_dataset.py --multi=True --mode_normal==True --split_type test --multi=True  --multi_class_idx 6 7 8 20
+python .\gen_celebA_dataset.py --multi=1 --split_type test --mode_normal=2 --multi=1  --multi_class_idx 20 8
 ```
 >Extreme point test
 ```
-python .\gen_celebA_dataset.py --multi=True --mode_normal==False --split_type test --multi=1  --multi_class_idx 6 7 8 20
+python .\gen_celebA_dataset.py --multi=1 --split_type test --mode_normal=0 --multi=1  --multi_class_idx 20 8
+```
+>Validating the individual accuracies
+```
+python validate_acc.py celeba ./results/multi_clf_8 --even=1 --multi=1 --multi_class_idx 20 8
 ```
 
 ## 4) Running Test 
 (In Testing_metrics folder)
 >Run the dist test
+>Define the index you would want to run on, with reference to the gen_celebA_dataset indexing
 ```
-python sample_test.py --multi=True --multi_class_idx 6 7 8 20
+python sample_test.py --multi_clf_path=multi_clf_4 --multi=1 --multi_class_idx 20 8 --index=%%x
+```
+
+
+
+##Auto scrips
+>scripts are under ./scripts file
+>Accuracy varaibility scrips, note that the classifiers have to be trained each round since they are testing on different attributes. These classifiers do not clash with Train_2_4_8_16 which saves the classifier in a different file
+```
+Accuracy_Single_Attribute_Run_ep
+Accuracy_double_Attribute_Run_ep
+```
+>Train classifiers
+```
+Train_2_4_8_16
+```
+>Sweeping distribution 
+```
+[2,4,8]attr_sweep
+```
+>Run All Extreme Poitns for all attributes
+```
+Full_Run_ExtremePoints
+```
+>Clean start, deletes all the cahced files
+```
+Clean
 ```

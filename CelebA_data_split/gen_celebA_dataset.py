@@ -17,10 +17,14 @@ parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class 
 parser.add_argument('--multi', type=int, default=1, help='If True, runs multi-attribute classifier')
 parser.add_argument('--split_type', type=str, help='[train,val,split]', default="test")
 parser.add_argument('--mode_normal', type=int, default=1, help='If True, normal mode, else extreme mode')
+parser.add_argument('--ABEP', type=int, default=0, help='State the Absolute bias starting point index')
+parser.add_argument('--step_mul', type=int, default=1, help='defines the dist step size')
 args = parser.parse_args()
 
-
 def dist(count):
+    step=1/2**args.step_mul
+# def dist(count,step_mul=1):
+#     step=1/2**step_mul
     dist_base=np.linspace(1,count,count)
     even=np.sum(dist_base)/count
     target=np.ones(count)*even
@@ -37,11 +41,83 @@ def dist(count):
             if ((dist_base[i]==even) and ((dist_base[count-1-i]==even))):
                 break
             else:
-                dist_base[i]=dist_base[i]+0.5
-                dist_base[count-1-i]=dist_base[count-1-i]-0.5
+                dist_base[i]=dist_base[i]+step
+                dist_base[count-1-i]=dist_base[count-1-i]-step
             array=copy.deepcopy(dist_base)
             array=array/np.sum(array)
             dist_array.append(array)
+    return dist_array
+
+#Create variable starting points for the bias distribution=1 (FIXED)
+def dist2(count):
+    if count==2 or count==4:
+        step=1
+    elif count==8:
+        step=0.5
+    else: #count==16
+        step=0.25
+    #Make perfectly bias
+    dist_base=np.zeros(count)
+    dist_base[0]=100
+    
+    #Target
+    even=100/count
+    target=np.ones(count)*even
+    
+    #Loop parameters
+    dist_array=[]
+    index=1
+    while (np.array_equal(dist_base,target)!=True):
+        if (dist_base[index]!=target[index]):
+            #Transfer from index 0
+            dist_base[0]=dist_base[0]-step
+            dist_base[index]=dist_base[index]+step
+        else:
+            index+=1
+        array=copy.deepcopy(dist_base) 
+        array=array/100
+        dist_array.append(array)
+        
+    return dist_array
+
+#Extension of dist 2 but variable starting points for the bias distribution
+def dist3(count,start_index=1):
+    if count==2 or count==4:
+        step=1
+    elif count==8:
+        step=0.5
+    else: #count==16
+        step=0.25
+    #Make perfectly bias
+    dist_base=np.zeros(count)
+    dist_base[start_index]=100
+    
+    #Target
+    even=100/count
+    target=np.ones(count)*even
+    
+    #Loop parameters
+    dist_array=[]
+    
+    #Allocate the starting point of the populating index
+    if start_index==0:
+        index=1
+    else:
+        index=0
+        
+    while (np.array_equal(dist_base,target)!=True):
+        if (dist_base[index]!=target[index]):
+            #Transfer from index 0
+            dist_base[start_index]=dist_base[start_index]-step
+            dist_base[index]=dist_base[index]+step
+        else:
+            index+=1
+            if index==start_index:
+                index+=1
+        array=copy.deepcopy(dist_base) 
+        array=array/100
+        dist_array.append(array)
+        
     return dist_array
 
 def extreme_dist(count):
@@ -136,6 +212,8 @@ def generate_test_datasets(dist,index,cap):
 if __name__=='__main__':
     if args.mode_normal==1:
         testdist=dist(2**len(args.multi_class_idx))
+    elif args.mode_normal==2:
+        testdist=dist3(2**len(args.multi_class_idx),args.ABEP)
     else:
         testdist=extreme_dist(2**len(args.multi_class_idx))
     

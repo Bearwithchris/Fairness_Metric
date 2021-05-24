@@ -1,29 +1,53 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Apr 29 14:19:55 2021
+Created on Tue May 18 09:37:30 2021
 
-@author: SUTD
+@author: Chris
 """
 import numpy as np
+import copy 
 from scipy.stats import wasserstein_distance
 import time
 
-f=open("../logs/fairness_dist.txt",'a')
 
-def fairness_discrepancy(data, n_classes, norm=0):
+def dist2(count):
+    if count==2 or count==4:
+        step=1
+    elif count==8:
+        step=0.5
+    else: #count==16
+        step=0.25
+    #Make perfectly bias
+    dist_base=np.zeros(count)
+    dist_base[0]=100
+    
+    #Target
+    even=100/count
+    target=np.ones(count)*even
+    
+    #Loop parameters
+    dist_array=[]
+    index=1
+    while (np.array_equal(dist_base,target)!=True):
+        if (dist_base[index]!=target[index]):
+            #Transfer from index 0
+            dist_base[0]=dist_base[0]-step
+            dist_base[index]=dist_base[index]+step
+        else:
+            index+=1
+        array=copy.deepcopy(dist_base) 
+        array=array/100
+        dist_array.append(array)
+        
+    return dist_array
+
+def fairness_discrepancy(props, n_classes, norm=0):
     """
     computes fairness discrepancy metric for single or multi-attribute
     this metric computes L2, L1, AND KL-total variation distance
     """
-    unique, freq = np.unique(data, return_counts=True)
-    props = freq / len(data) #Proportion of data that belongs to that data
-    
-    #------------------Modification to correct the zero support problem------------------------------------------------
-    temp=np.zeros(n_classes)
-    temp[unique]=props
-    props=temp
-    #------------------------------------------------------------------------------
-    
+    # unique, freq = np.unique(data, return_counts=True)
+    # props = freq / len(data) #Proportion of data that belongs to that data
     # print (freq)
     truth = 1./n_classes
 
@@ -45,23 +69,20 @@ def fairness_discrepancy(data, n_classes, norm=0):
     perc=np.array([i/np.sum(rank) for i in rank])
     
     #Create array to populate proportions
-    # props2=np.zeros(n_classes)
-    # props2[unique]=props
+    props2=copy.deepcopy(props)
+ 
                   
-    props[::-1].sort()
-    alpha=props[1:]
-    specificity=abs(props[0]-np.sum(alpha*perc))
+    props2[::-1].sort()
+    alpha=props2[1:]
+    specificity=abs(props2[0]-np.sum(alpha*perc))
     info_spec=(l1_fair_d+specificity)/2
     
     #Wasstertein Distance
-    wd=wasserstein_distance(props,np.ones(len(props))*truth)
+    wd=wasserstein_distance(props2,np.ones(len(props2))*truth)
     
     #Wassertein Specificity
     wds=(wd+specificity)/2
     if norm==0:
-        for i in props:
-            f.write("%f "%(i))
-        f.write("\n")
         return l2_fair_d, l1_fair_d,info_spec,specificity,wd,wds
         # return l2_fair_d, l1_fair_d,info_spec,specificity
     else:
@@ -104,9 +125,13 @@ def metric_max(n_classes,Mtype):
         fair_d=0
     return fair_d
 
-
-metric="wd"
-# print(metric_max(2,metric))
-# print(metric_max(4,metric))
-# print(metric_max(8,metric))
-print(metric_max(16,metric))
+attributes=16
+distArray=dist2(attributes)
+f=open("../logs/BaseLine.txt",'a' )
+count=0
+f.write("classs index l2 l1 IS Specificity wd wds \n")
+for i in distArray:
+    l2,l1,IS,S,wd,wds=fairness_discrepancy(i,attributes,norm=1)
+    f.write('{} {} {} {} {} {} {} {} \n'.format(attributes,count, l2, l1, IS,S,wd,wds))
+    count+=1
+f.close()

@@ -19,9 +19,6 @@ import torch.optim as optim
 import torch.nn.functional as F
 from torch.nn import Parameter as P
 import torchvision
-import argparse
-
-import metrics as fd
 
 # Import my stuff
 # import inception_utils
@@ -29,52 +26,10 @@ import metrics as fd
 # import utils_add_on as uao
 # import losses
 # from clf_models import ResNet18, BasicBlock, Net
+# import fid_score_mod
 
-import sys
-sys.path.append('../Data_prep')
-from clf_models import ResNet18, BasicBlock, Net
-
-
-
-
-# def fairness_discrepancy(data, n_classes):
-#     """
-#     computes fairness discrepancy metric for single or multi-attribute
-#     this metric computes L2, L1, AND KL-total variation distance
-#     """
-#     unique, freq = np.unique(data, return_counts=True)
-#     props = freq / len(data) #Proportion of data that belongs to that data
-#     print (freq)
-#     truth = 1./n_classes
-
-
-#     # L2 and L1
-#     l2_fair_d = np.sqrt(((props - truth)**2).sum())/n_classes
-#     l1_fair_d = abs(props - truth).sum()/n_classes
-
-#     # q = props, p = truth
-#     kl_fair_d = (props * (np.log(props) - np.log(truth))).sum()
-
-#     #Cross entropy
-#     p=np.ones(n_classes)/n_classes    
-#     # ce=cross_entropy(p,props,n_classes)-cross_entropy(p,p,n_classes)
-    
-#     #information specificity
-#     rank=np.linspace(1,n_classes-1,n_classes-1)
-#     rank[::-1].sort() #Descending order
-#     perc=np.array([i/np.sum(rank) for i in rank])
-    
-#     #Create array to populate proportions
-#     props2=np.zeros(n_classes)
-#     props2[unique]=props
-                  
-#     props2[::-1].sort()
-#     alpha=props2[1:]
-#     specificity=abs(props2[0]-np.sum(alpha*perc))
-#     info_spec=(l1_fair_d+specificity)/2
-    
-    
-#     return l2_fair_d, l1_fair_d, kl_fair_d,info_spec,specificity
+import fid_score_mod_AE
+import argparse
 
 
 def load_data(attributes,index):
@@ -85,6 +40,7 @@ def load_data(attributes,index):
     train_set = torch.utils.data.TensorDataset(dataset)
     return (train_set,len(data[0]),data[1])
 
+
 def classify_examples(model, sample_path):
     """
     classifies generated samples into appropriate classes 
@@ -93,16 +49,13 @@ def classify_examples(model, sample_path):
     preds = []
     probs = []
     samples = np.load(sample_path)['x']
-    bs=10
-    n_batches = samples.shape[0] // bs
-    remainder=samples.shape[0]-(n_batches*bs)
+    n_batches = samples.shape[0] // 1000
     print (sample_path)
 
     with torch.no_grad():
         # generate 10K samples
-    
         for i in range(n_batches):
-            x = samples[i*bs:(i+1)*bs]
+            x = samples[i*1000:(i+1)*1000]
             samp = x / 255.  # renormalize to feed into classifier
             samp = torch.from_numpy(samp).to('cuda').float()
 
@@ -111,20 +64,6 @@ def classify_examples(model, sample_path):
             _, pred = torch.max(probas, 1) #Returns the max indices i.e. index
             probs.append(probas)
             preds.append(pred)
-          
-            
-        if remainder!=0:
-            x = samples[(i+1)*bs:(bs*(i+1))+remainder]
-            samp = x / 255.  # renormalize to feed into classifier
-            samp = torch.from_numpy(samp).to('cuda').float()
-            # get classifier predictions
-            logits, probas = model(samp)
-            _, pred = torch.max(probas, 1) #Returns the max indices i.e. index
-            probs.append(probas)
-            preds.append(pred)
-            
-            
-            
         preds = torch.cat(preds).data.cpu().numpy()
         probs = torch.cat(probs).data.cpu().numpy()
         # probs = torch.cat(probs).data.cpu()
@@ -136,10 +75,10 @@ def run():
     parser = argparse.ArgumentParser()
     parser.add_argument('--clf_path', type=str, help='Folder of the CLF file', default="attr_clf")
     parser.add_argument('--multi_clf_path', type=str, help='Folder of the Multi CLF file', default="multi_clf")
-    parser.add_argument('--index', type=int, help='dataset index to load', default=0)
+    parser.add_argument('--index', type=int, help='dataset index to load', default=2)
     parser.add_argument('--class_idx', type=int, help='CelebA class label for training.', default=20)
     # parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[6,7,8,20])
-    parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[39,31])
+    parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[20]) #default=[39,31])
     parser.add_argument('--multi', type=int, default=1, help='If True, runs multi-attribute classifier')
     parser.add_argument('--split_type', type=str, help='[train,val,split]', default="test")
     args = parser.parse_args()
@@ -153,8 +92,8 @@ def run():
 
 
     #Log Runs
-    f=open('../%s/log_stamford_fair.txt' %("logs"),"a")
-    fnorm=open('../%s/log_stamford_fair_norm.txt' %("logs"),"a")
+    # f=open('../%s/log_stamford_fair.txt' %("logs"),"a")
+    # fnorm=open('../%s/log_stamford_fair_norm.txt' %("logs"),"a")
 
     # experiment_name = (config['experiment_name'] if config['experiment_name'] #Default CelebA
     #                     else utils.name_from_config(config))
@@ -196,10 +135,10 @@ def run():
    
 
     #=====Classify===================================================================
-    metrics = {'l2': 0, 'l1': 0, 'kl': 0}
-    l2_db = np.zeros(10)
-    l1_db = np.zeros(10)
-    kl_db = np.zeros(10)
+    # metrics = {'l2': 0, 'l1': 0, 'kl': 0}
+    # l2_db = np.zeros(10)
+    # l1_db = np.zeros(10)
+    # kl_db = np.zeros(10)
 
     # output file
     # fname = '%s/%s_fair_disc_fid_samples.p' % (config['samples_root'], perc_bias)
@@ -218,13 +157,13 @@ def run():
         
     # load attribute classifier here
     #(Model itself)
-    clf = ResNet18(block=BasicBlock, layers=[2, 2, 2, 2], num_classes=attributes, grayscale=False) 
-    clf.load_state_dict(clf_state_dict)
+    # clf = ResNet18(block=BasicBlock, layers=[2, 2, 2, 2], num_classes=clf_classes, grayscale=False) 
+    # clf.load_state_dict(clf_state_dict)
     # clf = Net(clf_classes) 
     # clf.load_state_dict(clf_state_dict)
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    clf = clf.to(device)
-    clf.eval()  # turn off batch norm
+    # clf = clf.to(device)
+    # clf.eval()  # turn off batch norm
 
     # classify examples and get probabilties
     # n_classes = 2
@@ -232,74 +171,67 @@ def run():
     #     n_classes = 4
 
     # number of classes
-    probs_db = np.zeros((1, size, clf_classes)) #Numper of runs , images per run ,Number of classes
+    # probs_db = np.zeros((1, config['sample_num_npz'], n_classes)) #Numper of runs , images per run ,Number of classes
+    
+    f=open("../logs/FAD_fair.txt","a")
     for i in range(1):
         # grab appropriate samples
-        npz_filename = os.path.join("../data","FID_sample_storage_%i"%attributes,'%s_fid_real_samples_%s.npz' % (attributes, args.index))
-        preds, probs = classify_examples(clf, npz_filename) #Classify the data
+        # npz_filename = '%s/%s_fid_real_samples_%s.npz' % ("./samples", perc_bias, k) #E.g. perc_fid_samples_0
+        # preds, probs = classify_examples(clf, npz_filename) #Classify the data
         
-        # l2, l1, kl,IS,specificity = fairness_discrepancy(preds, clf_classes) #Pass to calculate score
-        l2, l1,IS,specificity,wd,wds= fd.fairness_discrepancy(preds, clf_classes) #Pass to calculate score
-        l2_norm, l1_norm,IS_norm,specificity_norm, wd_norm,wds_norm= fd.fairness_discrepancy(preds, clf_classes,1) #Pass to calculate score
+        # l2, l1, kl = utils.fairness_discrepancy(preds, clf_classes) #Pass to calculate score
         
         #exp
         # l2Exp, l1Exp, klExp = utils.fairness_discrepancy_exp(probs, clf_classes) #Pass to calculate score
 
         # save metrics (To add on new mertrics add here)
-        l2_db[i] = l2
-        l1_db[i] = l1
+        # l2_db[i] = l2
+        # l1_db[i] = l1
         # kl_db[i] = kl
-        probs_db[i] = probs
+        # probs_db[i] = probs
         
         #Write log
         # f.write("Running: "+npz_filename+"\n")
-        f.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={}, wd={}, wds={} \n'.format(attributes,args.index, l2, l1, IS,specificity,wd,wds))  
-        # fnorm.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={}, wd={} \n'.format(attributes,args.index, l2_norm, l1_norm, IS_norm,specificity_norm,wd_norm))
-        # print('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={}, wd={} \n'.format(attributes,args.index, l2, l1, IS,specificity,wd))
-        # # print('fair_disc_exp for iter {} is: l2:{}, l1:{}, kl:{} \n'.format(i, l2Exp, l1Exp, klExp))
+        # f.write('fair_disc for iter {} is: l2:{}, l1:{}, kl:{} \n'.format(i, l2, l1, kl))
         
-        # f.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={} \n'.format(attributes,args.index, l2, l1, IS,specificity))  
-        fnorm.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={}, , wd={}, wds={} \n'.format(attributes,args.index, l2_norm, l1_norm, IS_norm,specificity_norm,wd_norm,wds_norm))
-        print('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={}, , wd={}, wds={} \n'.format(attributes,args.index, l2_norm, l1_norm, IS_norm,specificity_norm,wd_norm,wds_norm))
+        
+        # print('fair_disc for iter {} is: l2:{}, l1:{}, kl:{}'.format(i, l2, l1, kl))
+        # print('fair_disc_exp for iter {} is: l2:{}, l1:{}, kl:{} \n'.format(i, l2Exp, l1Exp, klExp))
         
         
         #Commented out for stamford experiment*************************************************************************************************
-        # #FID score 50_50 vs others 
-        # data_moments=os.path.join("./samples","0.5_fid_real_samples_ref_0.npz")
-        # sample_moments=os.path.join("./samples",'%s_fid_real_samples_%s.npz'%(perc_bias,k))
-        # # FID = fid_score_mod.calculate_fid_given_paths([data_moments, sample_moments], batch_size=100, cuda=True, dims=2048)
-        # FID = fid_score_mod_AE.calculate_faed_given_paths([data_moments, sample_moments], batch_size=100, cuda=True, dims=2048)
+        #FID score 50_50 vs others 
+        base="../data/FID_sample_storage_%i"%attributes
+        data_moments=os.path.join(base,'%s_fid_real_samples_ref_%s.npz'%(attributes,0))
+        sample_moments=os.path.join(base,'%s_fid_real_samples_%s.npz'%(attributes,args.index))
+        # FID = fid_score_mod.calculate_fid_given_paths([data_moments, sample_moments], batch_size=100, cuda=True, dims=2048)
+        FID = fid_score_mod_AE.calculate_faed_given_paths([data_moments, sample_moments], batch_size=1, cuda=True, dims=2048)
 
-        # print ("FID: "+str(FID))
-        # f.write("FID: "+str(FID)+"\n")     
+        print ("FID: "+str(FID))
+        f.write("Attributes: %i , Index: %i FID: %f \n"%(attributes,args.index,FID))     
         #Commented out for stamford experiment*************************************************************************************************
         
         f.close()
-    metrics['l2'] = l2_db
-    metrics['l1'] = l1_db
-    metrics['kl'] = kl_db
+    # metrics['l2'] = l2_db
+    # metrics['l1'] = l1_db
+    # metrics['kl'] = kl_db
     # print('fairness discrepancies saved in {}'.format(fname))
-    print(l2_db)
-    print(l1_db)
-    print(IS)
-    print(specificity)
-    print (wd)
+    # print(l2_db)
     
-    # # save all metrics
+    # save all metrics
     # with open(fname, 'wb') as fp:
     #     pickle.dump(metrics, fp)
     # np.save(os.path.join(config['samples_root'], 'clf_probs.npy'), probs_db)
 
 
-# def main():
-#     # parse command line and run
-#     parser = utils.prepare_parser()
-#     parser = utils.add_sample_parser(parser)
-#     config = vars(parser.parse_args())
-#     print(config)
-#     run(config)
+def main():
+    # parse command line and run
+    # parser = utils.prepare_parser()
+    # parser = utils.add_sample_parser(parser)
+    # config = vars(parser.parse_args())
+    # print(config)
+    run()
 
 
 if __name__ == '__main__':
-    run()
-#     main()
+    main()
