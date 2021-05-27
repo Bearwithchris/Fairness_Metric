@@ -106,7 +106,7 @@ def metric_max(n_classes,Mtype):
 
 
 metric="wd"
-# print(metric_max(2,metric))
-# print(metric_max(4,metric))
-# print(metric_max(8,metric))
+print(metric_max(2,metric))
+print(metric_max(4,metric))
+print(metric_max(8,metric))
 print(metric_max(16,metric))

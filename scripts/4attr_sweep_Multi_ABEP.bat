@@ -8,18 +8,26 @@ python .\gen_celebA_dataset.py --step_mul=4 --multi=1 --split_type test --mode_n
 cd ../Testing_metrics
 for /l %%x in (0, 1, 77) do python sample_test.py --multi_clf_path=multi_clf_4 --multi=1 --multi_class_idx 20 8 --index=%%x
 
+cd ../data/FID_sample_storage_4
+del *.npz
 
-cd ../CelebA_data_split
+cd ../../CelebA_data_split
 python .\gen_celebA_dataset.py --step_mul=4 --multi=1 --split_type test --mode_normal=2 --ABEP=1 --multi=1  --multi_class_idx 20 8
 cd ../Testing_metrics
 for /l %%x in (0, 1, 77) do python sample_test.py --multi_clf_path=multi_clf_4 --multi=1 --multi_class_idx 20 8 --index=%%x
 
-cd ../CelebA_data_split
+cd ../data/FID_sample_storage_4
+del *.npz
+
+cd ../../CelebA_data_split
 python .\gen_celebA_dataset.py --step_mul=4 --multi=1 --split_type test --mode_normal=2 --ABEP=3 --multi=1  --multi_class_idx 20 8
 cd ../Testing_metrics
 for /l %%x in (0, 1, 77) do python sample_test.py --multi_clf_path=multi_clf_4 --multi=1 --multi_class_idx 20 8 --index=%%x
 
-cd ../CelebA_data_split
+cd ../data/FID_sample_storage_4
+del *.npz
+
+cd ../../CelebA_data_split
 python .\gen_celebA_dataset.py --step_mul=4 --multi=1 --split_type test --mode_normal=2 --ABEP=4 --multi=1  --multi_class_idx 20 8
 cd ../Testing_metrics
 for /l %%x in (0, 1, 77) do python sample_test.py --multi_clf_path=multi_clf_4 --multi=1 --multi_class_idx 20 8 --index=%%x
