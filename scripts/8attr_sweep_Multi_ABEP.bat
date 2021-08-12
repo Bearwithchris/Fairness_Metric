@@ -32,7 +32,7 @@ del *.npz
 
 
 cd ../../CelebA_data_split
-python .\gen_celebA_dataset.py --multi=1 --split_type test --mode_normal=2 --ABEP=1 --multi=3  --multi_class_idx 20 8 31
+python .\gen_celebA_dataset.py --multi=1 --split_type test --mode_normal=2 --ABEP=3 --multi=2  --multi_class_idx 20 8 31
 cd ../Testing_metrics
 for /l %%x in (0, 1, 181) do python sample_test.py --multi_clf_path=multi_clf_8 --multi=1 --multi_class_idx 20 8 31 --index=%%x
 
@@ -41,7 +41,7 @@ del *.npz
 
 
 cd ../../CelebA_data_split
-python .\gen_celebA_dataset.py --multi=1 --split_type test --mode_normal=2 --ABEP=1 --multi=4  --multi_class_idx 20 8 31
+python .\gen_celebA_dataset.py --multi=1 --split_type test --mode_normal=2 --ABEP=4 --multi=1  --multi_class_idx 20 8 31
 cd ../Testing_metrics
 for /l %%x in (0, 1, 181) do python sample_test.py --multi_clf_path=multi_clf_8 --multi=1 --multi_class_idx 20 8 31 --index=%%x
 
@@ -49,7 +49,7 @@ cd ../data/FID_sample_storage_8
 del *.npz
 
 cd ../../CelebA_data_split
-python .\gen_celebA_dataset.py --multi=1 --split_type test --mode_normal=2 --ABEP=1 --multi=5  --multi_class_idx 20 8 31
+python .\gen_celebA_dataset.py --multi=1 --split_type test --mode_normal=2 --ABEP=5 --multi=1  --multi_class_idx 20 8 31
 cd ../Testing_metrics
 for /l %%x in (0, 1, 181) do python sample_test.py --multi_clf_path=multi_clf_8 --multi=1 --multi_class_idx 20 8 31 --index=%%x
 

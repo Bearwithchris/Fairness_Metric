@@ -207,7 +207,7 @@ def build_multi_celeba_classification_datset(split):
     """
     data = torch.load(
         BASE_PATH + '{}_celeba_64x64.pt'.format(split))
-    print('returning labels for (black hair, gender) multi-attribute')
+    # print('returning labels for (black hair, gender) multi-attribute')
     labels = torch.load(
         BASE_PATH + '{}_multi_labels_celeba_64x64.pt'.format(split))
     dataset = torch.utils.data.TensorDataset(data, labels)
@@ -226,7 +226,7 @@ def build_multi_even_celeba_classification_datset(split):
     """
     data = torch.load(
         BASE_PATH + '{}_multi_even_data_celeba_64x64.pt'.format(split))
-    print('returning labels for (black hair, gender) multi-attribute')
+    # print('returning labels for (black hair, gender) multi-attribute')
     labels = torch.load(
         BASE_PATH + '{}_multi_even_labels_celeba_64x64.pt'.format(split))
     dataset = torch.utils.data.TensorDataset(data, labels)

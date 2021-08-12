@@ -120,6 +120,18 @@ def dist3(count,start_index=1):
         
     return dist_array
 
+    
+#Random distribution 
+def random_dist(attributeS,samples=1000):
+    dist_array=[]
+    for i in range(samples):
+        rng = np.random.default_rng()
+        random_dist = rng.random((1, attributeS))
+        norm_random_dist=random_dist/random_dist.sum()
+        dist_array.append(norm_random_dist[0])
+    
+    return dist_array
+
 def extreme_dist(count):
     dist_array=[]
     for i in range(count):
@@ -151,7 +163,8 @@ def sample_max(dist):
         count=len(np.where(labels==i)[0])
         if count<minCount:
             minCount=count
-    cap=minCount/max(dist)
+    # cap=minCount/max(dist)
+    cap=minCount
     return cap
 
 
@@ -196,7 +209,10 @@ def generate_test_datasets(dist,index,cap):
     label_arg=np.ones(np.sum(dist_count))
     point=0
     for i in range(attributes):
-        label_arg[point:point+dist_count[i]]=np.random.choice(np.where(labels==i)[0],dist_count[i],replace=False)
+        try:
+            label_arg[point:point+dist_count[i]]=np.random.choice(np.where(labels==i)[0],dist_count[i],replace=False)
+        except:
+            print("error")
         point=point+dist_count[i]
         
     new_data= data[label_arg,:,:,:] #Even data
@@ -210,14 +226,24 @@ def generate_test_datasets(dist,index,cap):
 #Multu===================================================================================
 
 if __name__=='__main__':
+    #"Normal" distributions method
     if args.mode_normal==1:
         testdist=dist(2**len(args.multi_class_idx))
+    #shifting distribution method @ different AB-EP
     elif args.mode_normal==2:
         testdist=dist3(2**len(args.multi_class_idx),args.ABEP)
+        print (args.ABEP)
+    #Random distirbution methods
+    elif args.mode_normal==3:
+        testdist=random_dist(2**len(args.multi_class_idx))
+    #Only extreme points
     else:
         testdist=extreme_dist(2**len(args.multi_class_idx))
     
-    print(args.mode_normal)
+    #Save ideal dist for testing later
+    np.savez("../logs/ideal_dist.npz",x=testdist)
+    
+    # print(args.mode_normal)
     cap=sample_max(testdist[0])
     f=open("../logs/data_tags.txt","a")
     for i in range(len(testdist)):

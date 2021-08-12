@@ -23,8 +23,8 @@ from dataset_splits import (
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('model_name', type=str, help='celeba')
-    parser.add_argument('out_dir', type=str, help='where to save outputs')
+    parser.add_argument('model_name', type=str, default="celeba", help='celeba')
+    parser.add_argument('out_dir', type=str,default='./results/multi_clf_2/model_best.pth.tar' ,help='where to save outputs')
     parser.add_argument('--ckpt-path', type=str, default='./results/multi_clf', 
                         help='if test=True, path to clf checkpoint')
     parser.add_argument('--batch-size', type=int, default=64,
@@ -35,7 +35,7 @@ if __name__ == "__main__":
                         help='number of epochs [default: 10]')
     parser.add_argument('--class_idx', type=int, default=20,
                         help='CelebA class label for training.')
-    parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[20,8,7,6])
+    parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.',default=[20]) #default=[20,8,7,6])
     parser.add_argument('--multi', type=int, default=1, 
                         help='If True, runs multi-attribute classifier')
     parser.add_argument('--even', type=int, default=1, 
@@ -55,8 +55,8 @@ if __name__ == "__main__":
     device = torch.device('cuda' if args.cuda else 'cpu')
     
       #Create output folder
-    if not os.path.isdir(args.out_dir):
-        os.makedirs(args.out_dir)
+    # if not os.path.isdir(args.out_dir):
+        # os.makedirs(args.out_dir)
 
     # get data: idx 20 = male, idx 8 = black hair
     if args.multi==0:
@@ -72,23 +72,24 @@ if __name__ == "__main__":
         CLF_PATH = '../Data_prep/results/attr_clf/model_best.pth.tar'
 
     else:
-        CLF_PATH = '../Data_prep/results/multi_clf/model_best.pth.tar'
+        # CLF_PATH = '../Data_prep/results/multi_clf/model_best.pth.tar'
+        CLF_PATH = args.out_dir
         if args.even==0:
             # (Dataset are already in torch.utils.data format)
-            train_dataset = build_multi_celeba_classification_datset('train')
+            # train_dataset = build_multi_celeba_classification_datset('train')
             # train_dataset = build_custom_multi_celeba_classification_datset('train',args.count)
-            valid_dataset = build_multi_celeba_classification_datset('val')
+            # valid_dataset = build_multi_celeba_classification_datset('val')
             test_dataset = build_multi_celeba_classification_datset('test')
         else:
-            train_dataset = build_multi_even_celeba_classification_datset('train')
+            # train_dataset = build_multi_even_celeba_classification_datset('train')
             # train_dataset = build_custom_multi_celeba_classification_datset('train',args.count)
-            valid_dataset = build_multi_even_celeba_classification_datset('val')
+            # valid_dataset = build_multi_even_celeba_classification_datset('val')
             test_dataset = build_multi_even_celeba_classification_datset('test')
             
         n_classes =  2**len(args.multi_class_idx)
 
     f=open("../logs/Attribute_classifier_accuracy.txt","a")
-    f.write("Testing on test sample size: "+str(len(valid_dataset))+" and attributes "+str(args.multi_class_idx)+"\n")
+    f.write("Testing on test sample size: "+str(len(test_dataset))+" and attributes "+str(args.multi_class_idx)+"\n")
     print(len(test_dataset))
 
     # train/validation split (Shuffle and batch the datasets)
@@ -112,7 +113,7 @@ if __name__ == "__main__":
                 logits, probas = model(data)
                 # print (logits[0])
                 # print (target[0])
-                test_loss += F.cross_entropy(logits, target, reduction='sum').item() # sum up batch loss
+                # test_loss += F.cross_entropy(logits, target, reduction='sum').item() # sum up batch loss
                 _, pred = torch.max(probas, 1)
                 # num_examples += target.size(0)
                 # correct += (pred == target).sum()
@@ -133,7 +134,7 @@ if __name__ == "__main__":
         # print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
         #     test_loss, correct, num_examples,
         #     100. * correct / num_examples))
-        return test_loss
+        return 0
 
     # classifier has finished training, evaluate sample diversity
     best_loss = sys.maxsize

@@ -135,11 +135,11 @@ def run():
     # Prepare state dict, which holds things like epoch # and itr #
     parser = argparse.ArgumentParser()
     parser.add_argument('--clf_path', type=str, help='Folder of the CLF file', default="attr_clf")
-    parser.add_argument('--multi_clf_path', type=str, help='Folder of the Multi CLF file', default="multi_clf")
+    parser.add_argument('--multi_clf_path', type=str, help='Folder of the Multi CLF file', default="multi_clf_2")
     parser.add_argument('--index', type=int, help='dataset index to load', default=0)
     parser.add_argument('--class_idx', type=int, help='CelebA class label for training.', default=20)
     # parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[6,7,8,20])
-    parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[39,31])
+    parser.add_argument('--multi_class_idx',nargs="*", type=int, help='CelebA class label for training.', default=[20])
     parser.add_argument('--multi', type=int, default=1, help='If True, runs multi-attribute classifier')
     parser.add_argument('--split_type', type=str, help='[train,val,split]', default="test")
     args = parser.parse_args()
@@ -155,6 +155,7 @@ def run():
     #Log Runs
     f=open('../%s/log_stamford_fair.txt' %("logs"),"a")
     fnorm=open('../%s/log_stamford_fair_norm.txt' %("logs"),"a")
+    data_log=open('../%s/log_stamford_fair_norm_raw.txt' %("logs"),"a")
 
     # experiment_name = (config['experiment_name'] if config['experiment_name'] #Default CelebA
     #                     else utils.name_from_config(config))
@@ -238,6 +239,18 @@ def run():
         npz_filename = os.path.join("../data","FID_sample_storage_%i"%attributes,'%s_fid_real_samples_%s.npz' % (attributes, args.index))
         preds, probs = classify_examples(clf, npz_filename) #Classify the data
         
+        
+        #Log the prediction for error analysis
+        dist=fd.pred_2_dist(preds,clf_classes)
+        if (os.path.isfile("../logs/pred_dist.npz")):
+            x=np.load("../logs/pred_dist.npz")["x"]
+            x=np.vstack((x,dist))
+            np.savez("../logs/pred_dist.npz",x=x)
+        else:
+            #if there doesn't already exist this file
+            np.savez("../logs/pred_dist.npz",x=dist)
+        
+        
         # l2, l1, kl,IS,specificity = fairness_discrepancy(preds, clf_classes) #Pass to calculate score
         l2, l1,IS,specificity,wd,wds= fd.fairness_discrepancy(preds, clf_classes) #Pass to calculate score
         l2_norm, l1_norm,IS_norm,specificity_norm, wd_norm,wds_norm= fd.fairness_discrepancy(preds, clf_classes,1) #Pass to calculate score
@@ -260,6 +273,7 @@ def run():
         
         # f.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={} \n'.format(attributes,args.index, l2, l1, IS,specificity))  
         fnorm.write('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={}, , wd={}, wds={} \n'.format(attributes,args.index, l2_norm, l1_norm, IS_norm,specificity_norm,wd_norm,wds_norm))
+        data_log.write("{},{},{},{},{},{},{},{}\n".format(attributes,args.index, l2_norm, l1_norm, IS_norm,specificity_norm,wd_norm,wds_norm))
         print('Fair_disc for classes {} index {} is: l2={} l1={} IS={} Specificity={}, , wd={}, wds={} \n'.format(attributes,args.index, l2_norm, l1_norm, IS_norm,specificity_norm,wd_norm,wds_norm))
         
         

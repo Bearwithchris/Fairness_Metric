@@ -8,6 +8,7 @@ import numpy as np
 import copy 
 from scipy.stats import wasserstein_distance
 import time
+import matplotlib.pyplot as plt
 
 
 def dist2(count):
@@ -125,13 +126,49 @@ def metric_max(n_classes,Mtype):
         fair_d=0
     return fair_d
 
-attributes=16
-distArray=dist2(attributes)
-f=open("../logs/BaseLine.txt",'a' )
-count=0
-f.write("classs index l2 l1 IS Specificity wd wds \n")
-for i in distArray:
-    l2,l1,IS,S,wd,wds=fairness_discrepancy(i,attributes,norm=1)
-    f.write('{} {} {} {} {} {} {} {} \n'.format(attributes,count, l2, l1, IS,S,wd,wds))
-    count+=1
-f.close()
+
+def plot(label_list,array_list):
+    styles=['--o','--','-.',',',':','-']
+    fig = plt.figure(figsize=(20, 10))
+    ax = fig.add_subplot(111)
+    for i in range(1,len(label_list)):
+        ax.plot(array_list[0], array_list[i],styles[i-1],label=label_list[i],color='k')
+        ax.legend( prop={'size': 20})
+        # plt.plot(array_list[0],array_list[i],styles[i-1])
+    # plt.show()
+    return fig
+
+def delta_f(label_list,array_list):
+    array_list=np.array(array_list)
+    deltaf=np.zeros(len(array_list))
+    for i in range(1,len(array_list[0])):
+        deltaf=deltaf+(array_list[:,i-1]-array_list[:,i])
+    deltaf=deltaf/len(array_list[0])
+    return deltaf[1:]
+        
+    
+attributes_array=[2,4,8,16]
+for attributes in attributes_array:
+    distArray=dist2(attributes)
+    f=open("../logs/BaseLine.txt",'a' )
+    count=0
+    f.write("classs index l2 l1 IS Specificity wd linear \n")
+    array_list=[[],[],[],[],[],[],[]]
+    array_list_attr=["Count","L2","L1","IS","Specificity","WD","Linear"]
+    for i in distArray:
+        linear=(len(distArray)-count)/len(distArray)
+        l2,l1,IS,S,wd,wds=fairness_discrepancy(i,attributes,norm=1)
+        f.write('{} {} {} {} {} {} {} {} \n'.format(attributes,count, l2, l1, IS,S,wd,linear))
+        fairness_disc_scores=[count,l2,l1,IS,S,wd,linear]
+        for j in range(len(array_list_attr)):
+            array_list[j].append(fairness_disc_scores[j])
+        
+        count+=1
+    f.close()
+    fig=plot(array_list_attr,array_list)
+    fig.savefig("../logs/attr_%i_baseline.pdf"%attributes)
+    deltaf=delta_f(array_list_attr,array_list)
+    f=open("../logs/BaseLine_delta_f.txt",'a' )
+    f.write("Attributes: %i,L2 L1 IS Specificity WD Linear \n"%(attributes))
+    f.write('{} {} {} {} {} {} \n'.format(deltaf[0], deltaf[1], deltaf[2],deltaf[3],deltaf[4],deltaf[5]))
+    f.close()

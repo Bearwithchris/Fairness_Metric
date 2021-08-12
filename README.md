@@ -54,6 +54,11 @@ python sample_test.py --multi_clf_path=multi_clf_4 --multi=1 --multi_class_idx 2
 ```
 
 
+## Additional experiments
+(A) Random sweep -> Experimental Upper bound
+>1) Run .\scripts\random_Sweep to generate the psuedo random distribution and classified distribution (Assumed that the classifier has been trained with Train_2_4_8_16, chanve the multi_class_idx to the respective)
+>2) Move .\logs\ideal_dist.npz and .\logs\pred_dist.npz to .\Testing_metrics\Experiment_error\A_t_x x={2,4,8,16}
+>3) Run the error.py script
 
 ##Auto scrips
 >scripts are under ./scripts file

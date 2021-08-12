@@ -105,8 +105,19 @@ def metric_max(n_classes,Mtype):
     return fair_d
 
 
+def pred_2_dist(preds,n_classes):
+    unique, freq = np.unique(preds, return_counts=True)
+    props = freq / len(preds) #Proportion of data that belongs to that data
+    
+    temp=np.zeros(n_classes)
+    temp[unique]=props
+    props=temp
+    #-----------
+    return props
+    
+
 metric="l2"
-print(metric_max(2,metric))
-print(metric_max(4,metric))
-print(metric_max(8,metric))
-print(metric_max(16,metric))
+# print(metric_max(2,metric))
+# print(metric_max(4,metric))
+# print(metric_max(8,metric))
+# print(metric_max(16,metric))

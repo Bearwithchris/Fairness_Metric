@@ -186,3 +186,7 @@ src/KL-BigGAN/Fairness_test_bench/toy_data/dataset_raw_class_0
 data/
 Planning_experimetns/~$log_stamford_fair_evaluation.xlsx
 Planning_experimetns/log_stamford_fair_evaluation.xlsx
+*.xlsx
+*.pdf
+*.csv
+*.png
