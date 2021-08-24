@@ -1,0 +1,8 @@
+70668 9292
+Test set: Average loss: 0.8017, Accuracy: 6046/9292 (65%)
+
+Test set: Average loss: 0.7957, Accuracy: 6129/9432 (65%)
+70668 9292
+Test set: Average loss: 0.8557, Accuracy: 5751/9292 (62%)
+
+Test set: Average loss: 0.8612, Accuracy: 5772/9432 (61%)

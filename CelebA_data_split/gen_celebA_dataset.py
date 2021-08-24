@@ -19,6 +19,9 @@ parser.add_argument('--split_type', type=str, help='[train,val,split]', default=
 parser.add_argument('--mode_normal', type=int, default=1, help='If True, normal mode, else extreme mode')
 parser.add_argument('--ABEP', type=int, default=0, help='State the Absolute bias starting point index')
 parser.add_argument('--step_mul', type=int, default=1, help='defines the dist step size')
+
+#For bias one experiment
+parser.add_argument('--bias_one_perc', type=float, default=0.9, help='defines the size of the bias one dist, only if mode_normal==4')
 args = parser.parse_args()
 
 def dist(count):
@@ -142,6 +145,24 @@ def extreme_dist(count):
     dist_array.append(unbias)
     return dist_array
 
+#Generate xx_.. distribution
+def dist_bias_one(bias=0.9,at_size=4,samples=1000):
+    dist_array=[]
+    for _i in range(samples):
+        array_temp=np.zeros(at_size)
+        order=np.arange(at_size)
+        np.random.shuffle(order)
+        for j in range(len(order)):
+            if j==0:
+                array_temp[order[j]]=bias
+            else:
+                array_temp[order[j]]=(1-bias)/(at_size-1)
+        dist_array.append(np.array(array_temp))
+    return dist_array
+            
+         
+            
+
 def sample_max(dist):
     class_idx=args.class_idx
     split=args.split_type
@@ -236,6 +257,9 @@ if __name__=='__main__':
     #Random distirbution methods
     elif args.mode_normal==3:
         testdist=random_dist(2**len(args.multi_class_idx))
+    #xx-... distribution (bias one and even dist on the rest)
+    elif args.mode_normal==4:
+        testdist=dist_bias_one(args.bias_one_perc,2**len(args.multi_class_idx))
     #Only extreme points
     else:
         testdist=extreme_dist(2**len(args.multi_class_idx))

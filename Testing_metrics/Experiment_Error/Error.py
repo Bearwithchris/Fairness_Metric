@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import wasserstein_distance
 import time
+import os
 
 def dist_to_csv():
     n_class_array=[2,4,8,16]
@@ -111,23 +112,64 @@ def metric_max(n_classes,Mtype):
         fair_d=0
     return fair_d
 
+def measuring_scores_single(n_class,prefix="./",norm=0,debug_mode=0):
+    #open up the data 
+
+    error=np.zeros(1000)
+    
+    #Log files
+    if debug_mode==0:
+        if norm==0:
+            file=open(os.path.join(prefix,"scores_report_at_{}.csv".format(n_class)),'w')
+        else:
+            file=open(os.path.join(prefix,"scores_report_at_{}_normalised.csv").format(n_class),'w')
+            
+    #Load pre-classified data
+    ideal_dist=np.load(os.path.join(prefix,"ideal_dist.npz".format(n_class)))['x']
+    pred_dist=np.load(os.path.join(prefix,"pred_dist.npz".format(n_class)))['x']
+    
+    #Prepare CSV header
+    if debug_mode==0:
+        file.write("{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format("pred-L2","pred-L1","pred-IS","pred-SP","pred-WD","actual-L2","actual-L1","actual-IS","actual-SP","actual-WD","delta-L2","delta-L1","delta-IS","delta-SP","delta-WD"))
+        
+    #Measure FD score error
+    for i in range(len(ideal_dist)):
+        
+        #Unnormalised
+        if norm==0:     
+            f=fairness_discrepancy(pred_dist[i],n_class,norm=0)
+            fr=fairness_discrepancy(ideal_dist[i],n_class,norm=0)
+            delta=abs(np.asarray(fr)-np.asarray(f))
+            if debug_mode==0:
+                file.write("{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(f[0],f[1],f[2],f[3],f[4],fr[0],fr[1],fr[2],fr[3],fr[4],delta[0],delta[1],delta[2],delta[3],delta[4]))
+        #Normalised
+        else:
+            f=fairness_discrepancy(pred_dist[i],n_class,norm=1)
+            fr=fairness_discrepancy(ideal_dist[i],n_class,norm=1)
+            delta=abs(np.asarray(fr)-np.asarray(f))
+            if debug_mode==0:
+                file.write("{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(f[0],f[1],f[2],f[3],f[4],fr[0],fr[1],fr[2],fr[3],fr[4],delta[0],delta[1],delta[2],delta[3],delta[4]))
+            
+    if debug_mode==0:
+        file.close()
 
 def measuring_scores(norm=0,debug_mode=0):
     #open up the data 
     n_class_array=[2,4,8,16]
     for n_class in n_class_array:
+        prefix="./A_t_{}".format(n_class)
         error=np.zeros(1000)
         
         #Log files
         if debug_mode==0:
             if norm==0:
-                file=open("./scores_report_at_{}.csv".format(n_class),'w')
+                file=open(os.path.join("scores_report_at_{}.csv".format(n_class)),'w')
             else:
-                file=open("./scores_report_at_{}_normalised.csv".format(n_class),'w')
+                file=open(os.path.join(prefix,"scores_report_at_{}_normalised.csv").format(n_class),'w')
                 
         #Load pre-classified data
-        ideal_dist=np.load("./A_t_{}/ideal_dist.npz".format(n_class))['x']
-        pred_dist=np.load("./A_t_{}/pred_dist.npz".format(n_class))['x']
+        ideal_dist=np.load(os.path.join(prefix,"ideal_dist.npz".format(n_class)))['x']
+        pred_dist=np.load(os.path.join(prefix,"pred_dist.npz".format(n_class)))['x']
         
         #Prepare CSV header
         if debug_mode==0:
@@ -158,7 +200,7 @@ def measuring_scores(norm=0,debug_mode=0):
 def measuring_ub_error(metric="L2",norm=1,debug_mode=0):
     #open up the data 
     dict_metric={'L2':0, 'L1':1,'Is':2,'Sp':3}
-    n_class_array=[8]#[2,4,8,16]
+    n_class_array=[2,4,8,16]
     rounddp=5
     for n_class in n_class_array:
         error=np.zeros(1000)
@@ -276,17 +318,25 @@ def measuring_ub_error(metric="L2",norm=1,debug_mode=0):
             if debug_mode==0:    
                 file.write("{},{},{},{},{}\n".format(delta_p,f_star[1],f[1],delta_f,acceptable))
         if norm==0:
-            print ("Mean error for attribute {} i.e. delta_p={}".format(n_class,np.mean(error)))
-            print ("Mean Delta_f for attribute {} ={}".format(n_class,np.mean(delta_f_array)))
+            print ("Mean/SD error for attribute {} i.e. mean_delta_p={} and SD_delta_p={}".format(n_class,np.mean(error),np.std(error)))
+            print ("Mean/SD Delta_f for attribute {} ={} and SD_delta_f={}".format(n_class,np.mean(delta_f_array),np.std(delta_f_array)))
         else:
-            print ("Mean Normalised error for attribute {} i.e. delta_p={}".format(n_class,np.mean(error)))
-            print ("Mean Normalised Delta_f for attribute {} ={}".format(n_class,np.mean(delta_f_array)))
+            print ("Mean/SD Norm error for attribute {} i.e. mean_delta_p={} and SD_delta_p={}".format(n_class,np.mean(error),np.std(error)))
+            print ("Mean/SD Norm Delta_f for attribute {} ={} and SD_delta_f={}".format(n_class,np.mean(delta_f_array),np.std(delta_f_array)))
         if debug_mode==0:
             file.close()
 
 #Run upper bound
 metrics_array=["L2","L1","Is","Sp"]
 for m in metrics_array:
+    print (m)
     measuring_ub_error(metric=m,norm=1,debug_mode=1)
+    print ("========================================================================")
 #Run scores in norm mode
-measuring_scores(norm=1)
+# measuring_scores(norm=1)
+#Run scores in single at
+# k=4
+# perc=90
+# at="31_39"
+# prefix="./bias_one/{}_At_{}/{}".format(k,at,perc)
+# measuring_scores_single(4,prefix,norm=1)

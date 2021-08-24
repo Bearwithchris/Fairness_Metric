@@ -1,0 +1,4 @@
+Testing on test sample size: 9432 and attributes [31, 39]
+ Attribute_0=0.6653944020356234 Attribute_1=0.7675996607294318 Attribute_2=0.5636132315521628 Attribute_3=0.602629346904156
+Testing on test sample size: 9432 and attributes [31, 39]
+ Attribute_0=0.453774385072095 Attribute_1=0.7315521628498728 Attribute_2=0.4961832061068702 Attribute_3=0.7663273960983885

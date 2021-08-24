@@ -60,7 +60,7 @@ python sample_test.py --multi_clf_path=multi_clf_4 --multi=1 --multi_class_idx 2
 >2) Move .\logs\ideal_dist.npz and .\logs\pred_dist.npz to .\Testing_metrics\Experiment_error\A_t_x x={2,4,8,16}
 >3) Run the error.py script
 
-##Auto scrips
+## Auto scrips
 >scripts are under ./scripts file
 >Accuracy varaibility scrips, note that the classifiers have to be trained each round since they are testing on different attributes. These classifiers do not clash with Train_2_4_8_16 which saves the classifier in a different file
 ```

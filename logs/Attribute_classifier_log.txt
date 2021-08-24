@@ -1,0 +1,22 @@
+20368 2720
+Test set: Average loss: 0.9603, Accuracy: 1635/2720 (60%)
+
+Test set: Average loss: 0.9305, Accuracy: 1591/2720 (58%)
+
+Test set: Average loss: 0.9058, Accuracy: 1615/2720 (59%)
+
+Test set: Average loss: 0.9392, Accuracy: 1663/2720 (61%)
+
+Test set: Average loss: 0.9003, Accuracy: 1731/2720 (64%)
+
+Test set: Average loss: 0.9284, Accuracy: 1613/2720 (59%)
+
+Test set: Average loss: 0.9202, Accuracy: 1676/2720 (62%)
+
+Test set: Average loss: 0.8533, Accuracy: 1770/2720 (65%)
+
+Test set: Average loss: 0.9000, Accuracy: 1775/2720 (65%)
+
+Test set: Average loss: 0.9840, Accuracy: 1753/2720 (64%)
+
+Test set: Average loss: 0.9983, Accuracy: 2098/3244 (65%)
